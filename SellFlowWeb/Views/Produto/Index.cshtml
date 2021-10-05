@@ -3,20 +3,29 @@
 *@
 @{
 }
-<form>
-    <div class="mb-3">
-        <label for="NomeProduto" class="form-label">Nome Produto</label>
-        <input type="text" class="form-control" id="NomeProduto" aria-describedby="NomeProduto">
-    </div>
-    <div class="mb-3">
-        <label for="DescricaoProduto" class="form-label">Descrição do Produto</label>
-        <textarea type="text" class="form-control" id="DescricaoProduto"></textarea>
-    </div>
-    <select class="form-select" aria-label="CategoriaProduto">
-        <option selected>Selecione uma Categoria.</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Salvar</button>
-</form>
+<table class="table table-striped table-hover" id="tbprodutos">
+    <thead>
+        <tr id="tbheader">
+        </tr>
+    </thead>
+    <tbody id="tbdata">
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            await GetListProduto().then(response => {
+                console.log('response', response);
+
+                GeraTabela(response, 'tbheader', 'tbdata');
+
+            }).catch(e => {
+                console.log('error', e);
+            });
+        })
+
+    </script>
+}

@@ -8,5 +8,10 @@ namespace SellFlowWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult Criar()
+        {
+            return View();
+        }
     }
 }
