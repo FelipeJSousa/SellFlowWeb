@@ -1,5 +1,4 @@
 ﻿@model Models.ProdutoModel
-
 @{
     ViewData["Title"] = "Produto";
 }
@@ -9,17 +8,17 @@
     <div class="row">
 
         <div class="mb-3">
-            <label for="NomeProduto" class="form-label">Nome Produto</label>
-            <input type="text" class="form-control" id="NomeProduto" aria-describedby="NomeProduto">
+            <label asp-for="nome" class="control-label"></label>
+            <input asp-for="nome" class="form-control" />
         </div>
 
         <div class="mb-3">
-            <label for="DescricaoProduto" class="form-label">Descrição do Produto</label>
-            <textarea type="text" class="form-control" id="DescricaoProduto"></textarea>
+            <label asp-for="descricao" class="form-label"></label>
+            <textarea type="text" class="form-control" asp-for="descricao"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="CategoriaProduto" class="form-label">Categoria</label>
+            <label asp-for="categoria" class="form-label"></label>
             <select class="form-select" aria-label="CategoriaProduto" id="CategoriaProduto">
                 <option selected>Selecione uma Categoria.</option>
             </select>
@@ -53,11 +52,12 @@
                     console.log(`categoria-item ${y + 1}`, item);
                     let option = $("<option>", { value: item.id, text: item.nome });
                     $("#CategoriaProduto").append(option);
+                    $('#CategoriaProduto').val(@Model.categoria)
                 });
             }).catch(e => {
                 console.log('error', e);
             });
-        })
+        });
 
     </script>
 }

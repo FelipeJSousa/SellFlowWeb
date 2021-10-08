@@ -6,11 +6,8 @@ async function GetListProduto() {
     await $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        data: "{}",
-        dataType: "json",
         url: "https://localhost:5001/api/Produto",
         success: response => {
-            console.log(response);
             response.dados.forEach(x => _listaProdutos.push(x));
         },
         failure: response => {
@@ -35,7 +32,6 @@ async function GetListCategoria() {
         dataType: "json",
         url: "https://localhost:5001/api/Categoria",
         success: response => {
-            console.log(response);
             response.dados.forEach(x => _listaCategoria.push(x));
         },
         failure: (response) => {
@@ -68,7 +64,6 @@ function GeraTabela(list, tagHeader, tagData, actionEdit = true, actionDelete = 
     }
 
     list.forEach((item, y) => {
-        console.log(`produto-item ${y + 1}`, item);
         let _tr = $("<tr>");
         _tr.attr('id', `tr${y}`);
         $(`#${tagData}`).append(_tr);
@@ -92,7 +87,7 @@ function GeraTabela(list, tagHeader, tagData, actionEdit = true, actionDelete = 
                     $(`#tr${y}`).append(_td);
                     let _a = $("<a>", { text: 'Editar' });
                     _a.attr('id', `linktoeditar${item['id']}`);
-                    _a.attr('href', `http://localhost:4001/Produto/Editar/${item['id']}`);
+                    _a.attr('href', `https://localhost:4001/Produto/Editar/${item['id']}`);
                     $(`#editar${item['id']}`).append(_a);
                 }
                 if (actionDelete) {
@@ -101,7 +96,7 @@ function GeraTabela(list, tagHeader, tagData, actionEdit = true, actionDelete = 
                     $(`#tr${y}`).append(_td);
                     let _a = $("<a>", { text: 'Excluir' });
                     _a.attr('id', `linktoeditar${item['id']}`);
-                    _a.attr('href', `http://localhost:4001/Produto/Excluir/${item['id']}`);
+                    _a.attr('href', `https://localhost:4001/Produto/Excluir/${item['id']}`);
                     $(`#excluir${item['id']}`).append(_a);
                 }
             }
