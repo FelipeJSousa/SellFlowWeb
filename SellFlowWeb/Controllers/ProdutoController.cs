@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using System;
+using Models;
 
 namespace SellFlowWeb.Controllers
 {
@@ -31,7 +32,7 @@ namespace SellFlowWeb.Controllers
         {
             var _ret = await _produtoClient.Get(id);
             @ViewBag.message = TempData["message"];
-            return View(_ret.dados.First());
+            return View(_ret.dados);
         }
 
         public async Task<ActionResult> Salvar(ProdutoModel obj)
