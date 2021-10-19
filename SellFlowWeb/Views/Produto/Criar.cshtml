@@ -1,0 +1,63 @@
+﻿@model Models.ProdutoModel
+
+@{
+    ViewData["Title"] = "Produto";
+}
+
+<form asp-action="Salvar">
+
+    <div class="row">
+
+        <div class="mb-3">
+            <label for="NomeProduto" class="form-label">Nome Produto</label>
+            <input type="text" class="form-control" id="NomeProduto" aria-describedby="NomeProduto">
+        </div>
+
+        <div class="mb-3">
+            <label for="DescricaoProduto" class="form-label">Descrição do Produto</label>
+            <textarea type="text" class="form-control" id="DescricaoProduto"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="CategoriaProduto" class="form-label">Categoria</label>
+            <select class="form-select" aria-label="CategoriaProduto" id="CategoriaProduto">
+                <option selected>Selecione uma Categoria.</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-auto">
+
+        <span>@ViewBag.message</span>
+        <div class="col">
+            <button type="submit" id="btnsalvar" class="btn btn-primary">Salvar</button>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            await GetListCategoria().then(response => {
+                console.log('response', response);
+                response.forEach((item, y) => {
+                    console.log(`categoria-item ${y + 1}`, item);
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#CategoriaProduto").append(option);
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        })
+
+    </script>
+}
