@@ -10,9 +10,17 @@ namespace ApiClient.Interfaces
 
         Task<ReturnModel<List<T>>> Get(long id);
 
+<<<<<<< Updated upstream
+        Task<ReturnModel<T>> Save(object obj);
+
+        Task<ReturnModel<T>> Update(object obj);
+
+        Task<ReturnModel<List<T>>> Delete(int id);
+=======
         Task<ReturnModel<T>> Save(IModel obj);
 
         Task<ReturnModel<List<T>>> Delete(long id);
+>>>>>>> Stashed changes
 
     }
 }

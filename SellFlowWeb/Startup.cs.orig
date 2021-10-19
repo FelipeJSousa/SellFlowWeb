@@ -1,8 +1,17 @@
+using ApiClient.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+<<<<<<< Updated upstream
+using SellFlowWeb.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+=======
+>>>>>>> Stashed changes
 
 namespace SellFlowWeb
 {
@@ -20,12 +29,15 @@ namespace SellFlowWeb
         {
             services.AddControllersWithViews();
             services.AddConfigurationIoC(Configuration);
+<<<<<<< Updated upstream
+=======
             services.AddSession();
+>>>>>>> Stashed changes
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

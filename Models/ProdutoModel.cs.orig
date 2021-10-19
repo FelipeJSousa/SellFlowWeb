@@ -2,6 +2,24 @@
 
 namespace Models
 {
+<<<<<<< Updated upstream
+    public class ProdutoModel
+    {
+        [DisplayName("Id")]
+        public long? id { get; set; }
+        [DisplayName("Nome do Produto")]
+        public string nome { get; set; }
+        [DisplayName("Descrição do Produto")]
+        public string descricao { get; set; }
+        [DisplayName("Caminho Imagem Destaque")]
+        public string imagemdestaque { get; set; }
+        [DisplayName("Ativo")]
+        public bool ativo { get; set; }
+        [DisplayName("Curtidas")]
+        public long curtidas { get; set; }
+        [DisplayName("Categoria do Produto")]
+        public long categoria { get; set; }
+=======
     public class ProdutoModel : Model
     {
         [DisplayName("Nome do Produto")]
@@ -23,6 +41,7 @@ namespace Models
         [DisplayName("Categoria do Produto")]
         public long categoria { get; set; }
 
+>>>>>>> Stashed changes
         [DisplayName("Vendedor")]
         public long usuariovendedor { get; set; }
     }

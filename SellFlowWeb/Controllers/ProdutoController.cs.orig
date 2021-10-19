@@ -1,4 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
+<<<<<<< Updated upstream
+﻿using Microsoft.Extensions.DependencyInjection;
+=======
+>>>>>>> Stashed changes
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
@@ -27,6 +30,24 @@ namespace SellFlowWeb.Controllers
             return View();
         }
 
+<<<<<<< Updated upstream
+        public IActionResult Criar()
+        {
+            @ViewBag.message = TempData["message"];
+            return View();
+        }
+
+        public async Task<IActionResult> Editar(long id)
+        {
+            var _ret = await _produtoClient.Get(id);
+            @ViewBag.message = TempData["message"];
+            return View(_ret);
+        }
+
+        public IActionResult Excluir(long id)
+        {
+            return View();
+=======
         public async Task<IActionResult> Editar(long id)
         {
             var _ret = await _produtoClient.Get(id);
@@ -64,6 +85,7 @@ namespace SellFlowWeb.Controllers
             }
 
             return Ok();
+>>>>>>> Stashed changes
         }
 
     }

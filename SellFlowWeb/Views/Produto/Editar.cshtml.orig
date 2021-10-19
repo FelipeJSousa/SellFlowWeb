@@ -6,17 +6,23 @@
 <form asp-action="Salvar">
 
     <div class="row">
+<<<<<<< Updated upstream
+=======
         
         <input asp-for="id" hidden class="visually-hidden"/>
         <input asp-for="ativo" hidden class="visually-hidden"/>
         <input asp-for="imagemdestaque" hidden class="visually-hidden"/>
+>>>>>>> Stashed changes
 
         <div class="mb-3">
             <label asp-for="nome" class="control-label"></label>
             <input asp-for="nome" class="form-control" />
         </div>
 
+<<<<<<< Updated upstream
+=======
 
+>>>>>>> Stashed changes
         <div class="mb-3">
             <label asp-for="descricao" class="form-label"></label>
             <textarea type="text" class="form-control" asp-for="descricao"></textarea>
@@ -24,7 +30,11 @@
 
         <div class="mb-3">
             <label asp-for="categoria" class="form-label"></label>
+<<<<<<< Updated upstream
+            <select class="form-select" aria-label="CategoriaProduto" id="CategoriaProduto">
+=======
             <select class="form-select" aria-label="CategoriaProduto" asp-for="categoria">
+>>>>>>> Stashed changes
                 <option selected>Selecione uma Categoria.</option>
             </select>
         </div>
@@ -49,6 +59,17 @@
 @section Scripts{
     <script src="~/js/Produto/ProdutoMain.js"></script>
     <script>
+<<<<<<< Updated upstream
+
+        $(document).ready(async () => {
+            await GetListCategoria().then(response => {
+                console.log('response', response);
+                response.forEach((item, y) => {
+                    console.log(`categoria-item ${y + 1}`, item);
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#CategoriaProduto").append(option);
+                    $('#CategoriaProduto').val(@Model.categoria)
+=======
         const produtoModel = @Html.Raw(Json.Serialize(Model));
 
         $(document).ready(async () => {
@@ -66,10 +87,16 @@
                     let option = $("<option>", { value: item.id, text: item.nome });
                     $("#categoria").append(option);
                     $('#categoria').val(@Model.categoria)
+>>>>>>> Stashed changes
                 });
             }).catch(e => {
                 console.log('error', e);
             });
+<<<<<<< Updated upstream
+        });
+
+=======
         }
+>>>>>>> Stashed changes
     </script>
 }
