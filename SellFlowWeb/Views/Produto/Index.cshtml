@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Models.ProdutoModel
+@{
     ViewData["Title"] = "Produto";
 }
 
@@ -16,6 +17,9 @@
         <tbody id="tbdata">
         </tbody>
     </table>
+    <div class="d-flex justify-content-center m-5">
+        <h5 id="message"></h5>
+    </div>
     <div class="d-flex justify-content-center">
         <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status" id="load">
         </div>
@@ -27,9 +31,9 @@
     </div>
 </div>
 
-@section Scripts{
-    <script src="~/js/Produto/ProdutoMain.js"></script>
-    <script>
+@section Scripts {
+<script src="~/js/Produto/ProdutoMain.js"></script>
+<script>
 
         $(document).ready(async () => {
             CarregarProdutos();
@@ -39,15 +43,28 @@
 
             await GetListProduto().then(response => {
 
-                GeraTabela(response, 'tbheader', 'tbdata', true, false);
+                if (response.length > 0) {
+                    GeraTabela(response, 'tbheader', 'tbdata', true, true);
+                }
+                else {
+                    GeraTabelaVazia();
+                }
 
                 $('#load').css('display', 'none');
 
             }).catch(e => {
+                $("#message").text("Não foi possivel obter a lista de produtos.");
+                $(".spinner-grow").css('display', 'none')
+                GeraTabelaVazia();
                 console.log('error', e);
             });
 
         }
 
-    </script>
+        function GeraTabelaVazia() {
+            const produtoProps = [@Html.Raw(Json.Serialize(Model))]
+            GeraTabela(produtoProps, 'tbheader');
+        }
+
+</script>
 }

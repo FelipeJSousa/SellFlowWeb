@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +11,6 @@ namespace SellFlowWeb.Controllers
     public class LoginController : BaseController
     {
         private readonly IUsuarioClient _usuarioClient;
-
         public LoginController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _usuarioClient = serviceProvider.GetService<IUsuarioClient>();
@@ -20,6 +18,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 
@@ -35,6 +34,7 @@ namespace SellFlowWeb.Controllers
                     HttpContext.Session.SetString("nome", _retUsuario.dados.nome);
                     HttpContext.Session.SetString("sobrenome", _retUsuario.dados.sobrenome);
                     HttpContext.Session.SetString("cpf", _retUsuario.dados.cpf);
+                    HttpContext.Session.CommitAsync().GetAwaiter().GetResult();
                     return RedirectToAction("Index", "Home");
                 } 
             }

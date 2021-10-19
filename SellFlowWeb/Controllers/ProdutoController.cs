@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using System;
 using Models;
+using Microsoft.AspNetCore.Http;
 
 namespace SellFlowWeb.Controllers
 {
@@ -18,13 +19,13 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new ProdutoModel());
         }
 
         public IActionResult Criar()
         {
             @ViewBag.message = TempData["message"];
-            return View();
+            return VerificarLogin() ?? View();
         }
 
         public async Task<IActionResult> Editar(long id)
