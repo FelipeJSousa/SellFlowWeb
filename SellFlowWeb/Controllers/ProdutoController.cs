@@ -19,7 +19,6 @@ namespace SellFlowWeb.Controllers
         public IActionResult Index()
         {
             return View();
-            return View();
         }
 
         public IActionResult Criar()
@@ -54,7 +53,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            ReturnModel<List<ProdutoModel>> _ret = new();
+            ReturnModel<ProdutoModel> _ret = new();
 
             _ret = await _produtoClient.Delete(id);
 

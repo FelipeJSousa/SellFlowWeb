@@ -12,7 +12,7 @@ namespace ApiClient.Interfaces
 
         Task<ReturnModel<T>> Save(IModel obj);
 
-        Task<ReturnModel<List<T>>> Delete(long id);
+        Task<ReturnModel<T>> Delete(long id);
 
     }
 }

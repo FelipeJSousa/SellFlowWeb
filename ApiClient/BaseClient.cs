@@ -37,10 +37,10 @@ namespace ApiClient
             }
         }
 
-        public async Task<ReturnModel<List<T>>> Delete(long id)
+        public async Task<ReturnModel<T>> Delete(long id)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture, typeof(T).Name.Replace("Model", "")), $"id={id}");
-            return await DeleteAsync<List<T>>(requestUrl);
+            return await DeleteAsync<T>(requestUrl);
         }
 
     }
