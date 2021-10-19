@@ -1,7 +1,13 @@
 ﻿namespace Models
 {
+<<<<<<< Updated upstream
+    public class CategoriaModel
+    {
+        public long id { get; set; }
+=======
     public class CategoriaModel : Model
     {
+>>>>>>> Stashed changes
         public string nome { get; set; }
         public string descricao { get; set; }
         public string imagemdiretorio { get; set; }

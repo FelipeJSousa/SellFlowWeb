@@ -8,12 +8,19 @@ namespace ApiClient.Utility
         public static void Register(IServiceCollection services)
         {
             //services.AddScoped(typeof(IService<>), typeof(ServiceBase<>)); 
+<<<<<<< Updated upstream
+
+            
+            //services.AddScoped<IBaseClient, BaseClient>();
+            services.AddScoped<IProdutoClient, ProdutoClient>();
+=======
             
             //services.AddScoped<IBaseClient, BaseClient>();
             services.AddScoped<IPessoaClient, PessoaClient>();
             services.AddScoped<IUsuarioClient, UsuarioClient>();
             services.AddScoped<IProdutoClient, ProdutoClient>();
 
+>>>>>>> Stashed changes
         }
     }
 }

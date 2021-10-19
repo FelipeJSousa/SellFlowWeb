@@ -1,0 +1,41 @@
+﻿@model Models.UsuarioModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<form asp-action="Auth">
+
+    <div class="row">
+
+        <div class="mb-3">
+            <label asp-for="email" class="form-label">E-mail</label>
+            <input type="text" class="form-control" asp-for="email" aria-describedby="Email">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="senha" class="form-label">Senha</label>
+            <input type="password" class="form-control" asp-for="senha">
+        </div>
+
+    </div>
+    <div class="row row-cols-auto">
+        <span>@TempData["message"]</span>
+    </div>
+    <div class="row row-cols-auto">
+        <div class="col">
+            <button type="submit" id="btnlogin" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i>Login</button>
+        </div>
+
+        <div class="col">
+            <a asp-controller="Usuario" asp-action="Cadastrar" class="btn btn-outline-secondary">Cadastrar-se</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+
+}

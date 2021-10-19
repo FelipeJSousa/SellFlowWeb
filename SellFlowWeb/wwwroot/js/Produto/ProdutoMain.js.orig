@@ -45,7 +45,10 @@ async function GetListCategoria() {
     });
 }
 
+<<<<<<< Updated upstream
+=======
 
+>>>>>>> Stashed changes
 function GeraTabela(list, tagHeader, tagData, actionEdit = true, actionDelete = true) {
     Object.getOwnPropertyNames(list[0])
         .forEach(prop => {
