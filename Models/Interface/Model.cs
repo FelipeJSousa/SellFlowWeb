@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace Models.Interface
 {
     public interface IModel
     {

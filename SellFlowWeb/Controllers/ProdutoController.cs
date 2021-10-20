@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using System;
 using Models;
+using System.Linq;
+using SellFlowWeb.Models.ApiRequest;
+using SellFlowWeb.Models.DataView;
 
 namespace SellFlowWeb.Controllers
 {
@@ -18,24 +21,29 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return VerificarLogin(View(new ProdutoDataView()));
         }
 
         public IActionResult Criar()
         {
             @ViewBag.message = TempData["message"];
-            return View();
+            return VerificarLogin(View());
         }
 
         public async Task<IActionResult> Editar(long id)
         {
             var _ret = await _produtoClient.Get(id);
             @ViewBag.message = TempData["message"];
-            return View(_ret.dados);
+            return VerificarLogin(View(_ret.dados.FirstOrDefault()));
         }
 
-        public async Task<ActionResult> Salvar(ProdutoModel obj)
+        public async Task<IActionResult> Salvar(ProdutoApiRequest obj)
         {
+            var redirectHome = VerificarLogin();
+            if (redirectHome is not null)
+            {
+                return redirectHome;
+            }
 
             ReturnModel<ProdutoModel> _ret = new();
 
@@ -53,17 +61,21 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            ReturnModel<ProdutoModel> _ret = new();
-
-            _ret = await _produtoClient.Delete(id);
-
-            if (!_ret.status)
+            var redirectHome = VerificarLogin();
+            if (redirectHome is not null)
             {
-                TempData["message"] = "Não foi possível Salvar!";
-                BadRequest();
+                return redirectHome;
             }
 
-            return Ok();
+            ReturnModel<ProdutoModel> _ret = await _produtoClient.Delete(id);
+
+            if(!_ret.status)
+            {
+                TempData["message"] = "Não foi possível Excluir!";
+                return View("Index");
+            }
+
+            return View("Index");
         }
 
     }

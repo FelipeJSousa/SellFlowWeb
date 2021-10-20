@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SellFlowWeb.Models;
-using System;
 using System.Diagnostics;
+using System;
 
 namespace SellFlowWeb.Controllers
 {
@@ -13,12 +15,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return VerificarLogin(View());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

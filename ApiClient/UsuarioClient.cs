@@ -1,6 +1,5 @@
 ﻿using ApiClient.Interfaces;
 using Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApiClient

@@ -1,4 +1,7 @@
-﻿@model Models.ProdutoModel
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model SellFlowWeb.Models.DataView.ProdutoDataView
 
 @{
     ViewData["Title"] = "Produto";
@@ -6,21 +9,26 @@
 
 <form asp-action="Salvar">
 
+    <input asp-for="id" hidden class="visually-hidden" value="0">
+    <input asp-for="ativo" hidden class="visually-hidden" value="true">
+    <input asp-for="imagemdestaque" hidden class="visually-hidden" value="">
+    <input asp-for="usuariovendedor" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
+
     <div class="row">
 
         <div class="mb-3">
-            <label for="NomeProduto" class="form-label">Nome Produto</label>
-            <input type="text" class="form-control" id="NomeProduto" aria-describedby="NomeProduto">
+            <label for="nome" class="form-label">Nome Produto</label>
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto">
         </div>
 
         <div class="mb-3">
-            <label for="DescricaoProduto" class="form-label">Descrição do Produto</label>
-            <textarea type="text" class="form-control" id="DescricaoProduto"></textarea>
+            <label for="descricao" class="form-label">Descrição do Produto</label>
+            <textarea type="text" class="form-control" asp-for="descricao"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="CategoriaProduto" class="form-label">Categoria</label>
-            <select class="form-select" aria-label="CategoriaProduto" id="CategoriaProduto">
+            <label for="categoria" class="form-label">Categoria</label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoria">
                 <option selected>Selecione uma Categoria.</option>
             </select>
         </div>
@@ -47,17 +55,22 @@
     <script>
 
         $(document).ready(async () => {
+            await preencherCategoria();
+
+        });
+
+        async function preencherCategoria () {
             await GetListCategoria().then(response => {
                 console.log('response', response);
                 response.forEach((item, y) => {
                     console.log(`categoria-item ${y + 1}`, item);
                     let option = $("<option>", { value: item.id, text: item.nome });
-                    $("#CategoriaProduto").append(option);
+                    $("#categoria").append(option);
                 });
             }).catch(e => {
                 console.log('error', e);
             });
-        })
+        };
 
     </script>
 }
