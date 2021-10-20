@@ -20,5 +20,14 @@ namespace SellFlowWeb.Controllers
             return null;
         }
 
+        public IActionResult VerificarLogin(IActionResult view)
+        {
+            if (!HttpContext.Session.GetInt32("idusuario").HasValue)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return view;
+        }
+
     }
 }
