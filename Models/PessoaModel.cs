@@ -11,6 +11,5 @@ namespace Models
         public UsuarioModel usuarioObj { get; set; }
         public DateTime dataNascimento { get; set; }
         public bool ativo { get; set; }
-
     }
 }

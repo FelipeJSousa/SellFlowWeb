@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Models.Interface;
+using System.ComponentModel;
 
 namespace Models
 {
