@@ -1,6 +1,8 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +20,11 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.Clear();
+            var redirectHome = VerificarLogin();
+            if (redirectHome is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -26,7 +32,8 @@ namespace SellFlowWeb.Controllers
         {
             if (!string.IsNullOrWhiteSpace(obj.email) && !string.IsNullOrWhiteSpace(obj.senha))
             {
-                var _retUsuario = await _usuarioClient.Validar(obj);
+                var _obj = new Mapper(AutoMapperConfig.RegisterMappings()).Map<UsuarioModel>(obj);
+                var _retUsuario = await _usuarioClient.Validar(_obj);
                 if (_retUsuario != null && _retUsuario.status)
                 {
                     HttpContext.Session.SetInt32("idusuario", ((int)_retUsuario.dados.usuarioObj.id));
@@ -34,18 +41,20 @@ namespace SellFlowWeb.Controllers
                     HttpContext.Session.SetString("nome", _retUsuario.dados.nome);
                     HttpContext.Session.SetString("sobrenome", _retUsuario.dados.sobrenome);
                     HttpContext.Session.SetString("cpf", _retUsuario.dados.cpf);
-                    HttpContext.Session.CommitAsync().GetAwaiter().GetResult();
                     return RedirectToAction("Index", "Home");
                 } 
             }
             TempData["message"] = "Não foi possível realizar o login.";
-            return View("Index");
+            return VerificarLogin(View("Index"));
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            return View("Login");
+            foreach (var cookieKey in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookieKey);
+            }
+            return RedirectToActionPermanent("Index");
         }
 
     }

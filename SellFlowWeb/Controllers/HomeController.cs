@@ -15,7 +15,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return VerificarLogin(View());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

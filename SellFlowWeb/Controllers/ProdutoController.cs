@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using System;
 using Models;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
+using SellFlowWeb.Models.ApiRequest;
+using SellFlowWeb.Models.DataView;
 
 namespace SellFlowWeb.Controllers
 {
@@ -20,7 +21,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            return VerificarLogin(View(new ProdutoModel()));
+            return VerificarLogin(View(new ProdutoDataView()));
         }
 
         public IActionResult Criar()
@@ -36,8 +37,13 @@ namespace SellFlowWeb.Controllers
             return VerificarLogin(View(_ret.dados.FirstOrDefault()));
         }
 
-        public async Task<ActionResult> Salvar(ProdutoModel obj)
+        public async Task<IActionResult> Salvar(ProdutoApiRequest obj)
         {
+            var redirectHome = VerificarLogin();
+            if (redirectHome is not null)
+            {
+                return redirectHome;
+            }
 
             ReturnModel<ProdutoModel> _ret = new();
 
