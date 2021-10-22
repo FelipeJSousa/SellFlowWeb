@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Models;
 
 namespace SellFlowWeb.Models.DataView
 {
     public class ProdutoDataView : Model
     {
+        [Required]
         [DisplayName("Nome do Produto")]
         public string nome { get; set; }
 
+        [Required]
         [DisplayName("Descrição do Produto")]
-
         public string descricao { get; set; }
 
         [DisplayName("Caminho Imagem Destaque")]
@@ -18,13 +20,16 @@ namespace SellFlowWeb.Models.DataView
         [DisplayName("Ativo")]
         public bool ativo { get; set; }
 
+
         [DisplayName("Curtidas")]
         public long curtidas { get; set; }
 
+        [Required]
         [DisplayName("Categoria")]
-        public CategoriaDataView categoria { get; set; }
+        public CategoriaDataView categoriaObj { get; set; }
 
+        [Required]
         [DisplayName("Vendedor")]
-        public long usuariovendedor { get; set; }
+        public UsuarioDataView usuariovendedorObj { get; set; }
     }
 }

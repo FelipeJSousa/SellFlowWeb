@@ -13,15 +13,26 @@ namespace SellFlowWeb
 
                 cfg.CreateMap<PessoaDataView, PessoaModel>().ReverseMap();
                 cfg.CreateMap<PessoaApiRequest, PessoaModel>().ReverseMap();
+                cfg.CreateMap<PessoaApiRequest, PessoaDataView>()
+                   .ForMember(dest => dest.usuarioObj, opt => opt.MapFrom(src => new UsuarioDataView()))
+                   .AfterMap((src, dest) => dest.usuarioObj.id =src.id)
+                   .ReverseMap();
 
                 cfg.CreateMap<UsuarioDataView, UsuarioModel>().ReverseMap();
                 cfg.CreateMap<UsuarioApiRequest, UsuarioModel>().ReverseMap();
+                cfg.CreateMap<UsuarioApiRequest, UsuarioDataView>()
+                   .ReverseMap();
 
                 cfg.CreateMap<CategoriaDataView, CategoriaModel>().ReverseMap();
                 cfg.CreateMap<CategoriaApiRequest, CategoriaModel>().ReverseMap();
+                cfg.CreateMap<CategoriaApiRequest, CategoriaDataView>().ReverseMap();
 
                 cfg.CreateMap<ProdutoDataView, ProdutoModel>().ReverseMap();
                 cfg.CreateMap<ProdutoApiRequest, ProdutoModel>().ReverseMap();
+                cfg.CreateMap<ProdutoApiRequest, ProdutoDataView>().ReverseMap()
+                   .ForMember(dest => dest.usuario, opt => opt.MapFrom(src => src.usuariovendedorObj.id))
+                   .ForMember(dest => dest.categoria, opt => opt.MapFrom(src => src.categoriaObj.id))
+                   .ReverseMap();
 
                 //cfg.CreateMap<PermissaoDataView, PermissaoModel>().ReverseMap();
                 //cfg.CreateMap<PermissaoApiRequest, PermissaoModel>().ReverseMap();

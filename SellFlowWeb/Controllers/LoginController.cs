@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
 using AutoMapper;
@@ -20,14 +19,10 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Index()
         {
-            var redirectHome = VerificarLogin();
-            if (redirectHome is null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            HttpContext.Session.Clear();
             return View();
         }
-
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Auth(UsuarioModel obj)
         {
             if (!string.IsNullOrWhiteSpace(obj.email) && !string.IsNullOrWhiteSpace(obj.senha))
@@ -50,11 +45,8 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Logout()
         {
-            foreach (var cookieKey in Request.Cookies.Keys)
-            {
-                Response.Cookies.Delete(cookieKey);
-            }
-            return RedirectToActionPermanent("Index");
+            HttpContext.Session.Clear();
+            return View("Index");
         }
 
     }

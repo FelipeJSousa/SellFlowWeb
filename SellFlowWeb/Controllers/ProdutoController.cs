@@ -7,6 +7,8 @@ using Models;
 using System.Linq;
 using SellFlowWeb.Models.ApiRequest;
 using SellFlowWeb.Models.DataView;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace SellFlowWeb.Controllers
 {
@@ -19,9 +21,11 @@ namespace SellFlowWeb.Controllers
             _produtoClient = serviceProvider.GetService<IProdutoClient>();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return VerificarLogin(View(new ProdutoDataView()));
+            var _ret = await _produtoClient.GetAll();
+            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(_ret.dados);
+            return VerificarLogin(View(_produtos));
         }
 
         public IActionResult Criar()
@@ -32,22 +36,19 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Editar(long id)
         {
-            var _ret = await _produtoClient.Get(id);
             @ViewBag.message = TempData["message"];
-            return VerificarLogin(View(_ret.dados.FirstOrDefault()));
+            var _ret = await _produtoClient.Get(id);
+            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(_ret.dados);
+            return VerificarLogin(View(_produtos.FirstOrDefault()));
         }
 
-        public async Task<IActionResult> Salvar(ProdutoApiRequest obj)
+        public async Task<IActionResult> Salvar(ProdutoDataView obj)
         {
-            var redirectHome = VerificarLogin();
-            if (redirectHome is not null)
-            {
-                return redirectHome;
-            }
+            var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
+            var _produto = _mapper.Map<ProdutoApiRequest>(obj);
 
             ReturnModel<ProdutoModel> _ret = new();
-
-            _ret = await _produtoClient.Save(obj);
+            _ret = await _produtoClient.Save(_produto);
 
             if (!_ret.status)
             {
@@ -55,18 +56,12 @@ namespace SellFlowWeb.Controllers
                 return View("Editar",obj.id);
             }
 
-            return View("Index");
+            return RedirectToAction("Index");
 
         }
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirectHome = VerificarLogin();
-            if (redirectHome is not null)
-            {
-                return redirectHome;
-            }
-
             ReturnModel<ProdutoModel> _ret = await _produtoClient.Delete(id);
 
             if(!_ret.status)
@@ -75,7 +70,7 @@ namespace SellFlowWeb.Controllers
                 return View("Index");
             }
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
     }
