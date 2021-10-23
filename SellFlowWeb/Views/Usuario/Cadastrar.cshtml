@@ -21,7 +21,7 @@
             </div>
             <div class="form-group m-3">
                 <label asp-for="cpf" class="control-label"></label>
-                <input asp-for="cpf" class="form-control" />
+                <input asp-for="cpf" class="form-control" onblur="ValidarCampo(this, 'Informe o CPF', { func : ValidarCPF(this.value ?? 0) })" />
             </div>
             <div class="form-group m-3">
                 <label asp-for="dataNascimento" class="control-label"></label>
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group m-3">
                 <label asp-for="usuarioObj.email" class="control-label"></label>
-                <input asp-for="usuarioObj.email" type="email" class="form-control" onblur="ValidarCampo(this,'Informe uma e-mail.')"/>
+                <input asp-for="usuarioObj.email" type="email" class="form-control" onblur="ValidarCampo(this,'Informe um e-mail.')"/>
             </div>
             <div class="form-group m-3">
                 <label asp-for="usuarioObj.senha" class="control-label"></label>
@@ -53,11 +53,6 @@
     <script>
         $(document).ready(() => {
             $("#cpf").mask("999.999.999-99");
-
-            $("#cpf").on('blur', () => {
-                 ValidarInput($("#cpf"), ValidarCPF($("#cpf").val() ?? 0), 'Informe um CPF válido.')
-            });
         });
-
     </script>
 }

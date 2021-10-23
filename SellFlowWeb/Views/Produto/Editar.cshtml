@@ -6,7 +6,7 @@
     ViewData["Title"] = "Produto";
 }
 
-<form asp-action="Salvar">
+<form asp-action="Salvar" id="Salvar">
 
     <div class="row">
         <input asp-for="id" hidden class="visually-hidden">
@@ -51,6 +51,7 @@
 
 @section Scripts{
     <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
     <script>
         const produtoModel = @Html.Raw(Json.Serialize(Model));
 

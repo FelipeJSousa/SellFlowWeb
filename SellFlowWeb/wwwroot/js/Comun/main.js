@@ -9,13 +9,18 @@
     }
 }
 
-function ValidarCampo(field, error, itemclass = "item-error", labelclass = "label-error") {
+function ValidarCampo(field, error, { func, itemclass, labelclass} = { func : null, itemclass : "item-error", labelclass : "label-error" }) {
     var validation = false;
-    if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
-        validation = field.value.length > 0;
+    if (func != null) {
+        validation = func;
     }
-    if (field.tagName === 'SELECT') {
-        validation = field.selectedIndex != 0;
+    else {
+        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'EMAIL' || field.tagName === 'PASSWORD' || field.tagName === 'DATE') {
+            validation = field.value.length > 0;
+        }
+        if (field.tagName === 'SELECT') {
+            validation = field.selectedIndex != 0;
+        }
     }
 
     Validar(field, validation, error, itemclass, labelclass);
@@ -24,8 +29,10 @@ function ValidarCampo(field, error, itemclass = "item-error", labelclass = "labe
 function Validar(field, validation, error, itemclass, labelclass) {
     if (validation) {
         field.classList.remove(itemclass)
-        if (field.nextElementSibling.className.includes(labelclass)) {
-            field.nextElementSibling.remove();
+        if (field.nextElementSibling?.className != null) {
+            if (field.nextElementSibling?.className?.includes(labelclass)) {
+                field.nextElementSibling.remove();
+            }
         }
     }
     else {
