@@ -21,16 +21,13 @@ namespace SellFlowWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(15);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
                 options.Cookie.Name = "SellFlowApp";
             });
+            services.AddHttpContextAccessor();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews();
             services.AddConfigurationIoC(Configuration);
         }

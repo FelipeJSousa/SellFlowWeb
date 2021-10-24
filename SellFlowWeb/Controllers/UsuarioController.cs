@@ -23,24 +23,14 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Cadastrar()
         {
-            return VerificarLogin(View());
+            return View();
         }
         
         public async Task<IActionResult> Salvar(PessoaDataView obj)
         {
-            var redirectHome = VerificarLogin();
-            if (redirectHome is not null)
-            {
-                return redirectHome;
-            }
-
             var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
             var _obj = _mapper.Map<PessoaModel>(obj);
 
-            if (_obj.usuarioObj.permissao is null)
-            {
-                _obj.usuarioObj.permissao = 1;
-            }
 
             var _objusu = _mapper.Map<UsuarioApiRequest>(_obj.usuarioObj);
             var retusu = await _usuarioClient.Save(_objusu);
@@ -53,7 +43,7 @@ namespace SellFlowWeb.Controllers
                 if (!retpes.status) 
                 {
                     TempData["message"] = "Não foi possível realizar o cadastro.";
-                    return View("Cadastro");
+                    return View("Cadastrar");
                 }
                 else
                 {

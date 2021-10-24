@@ -10,6 +10,6 @@ namespace SellFlowWeb.Models.ApiRequest
         public bool ativo { get; set; }
         public long curtidas { get; set; }
         public long categoria { get; set; }
-        public long usuariovendedor { get; set; }
+        public long usuario { get; set; }
     }
 }

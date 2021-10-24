@@ -15,5 +15,7 @@
         public long categoria { get; set; }
 
         public long usuariovendedor { get; set; }
+        public UsuarioModel usuariovendedorObj { get; set; }
+        public CategoriaModel categoriaObj { get; set; }
     }
 }

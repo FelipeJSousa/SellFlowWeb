@@ -9,9 +9,7 @@ namespace SellFlowWeb.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
+        public HomeController(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public IActionResult Index()
         {

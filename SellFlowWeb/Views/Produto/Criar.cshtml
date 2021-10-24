@@ -7,39 +7,40 @@
     ViewData["Title"] = "Produto";
 }
 
-<form asp-action="Salvar">
-
+<form asp-action="Salvar" id="Salvar">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">
     <input asp-for="imagemdestaque" hidden class="visually-hidden" value="">
-    <input asp-for="usuariovendedor" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
+    <input asp-for="usuariovendedorObj.id" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
 
     <div class="row">
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome Produto</label>
-            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto">
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe o nome do produto.')">
         </div>
 
         <div class="mb-3">
             <label for="descricao" class="form-label">Descrição do Produto</label>
-            <textarea type="text" class="form-control" asp-for="descricao"></textarea>
+            <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição do produto.')"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoria</label>
-            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoria">
+            <label asp-for="categoriaObj" class="form-label"></label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoriaObj.id" onclick="ValidarCampo(this, 'Selecione uma categoria para o produto.')" onblur="ValidarCampo(this, 'Selecione uma categoria para o produto.')">
                 <option selected>Selecione uma Categoria.</option>
             </select>
         </div>
 
     </div>
+    <div class="row row-cols-auto m-2">
+        <span id="tempmessage">@ViewBag.message</span>
+    </div>
+    <div class="row row-cols-auto m-2">
 
-    <div class="row row-cols-auto">
-
-        <span>@ViewBag.message</span>
         <div class="col">
-            <button type="submit" id="btnsalvar" class="btn btn-primary">Salvar</button>
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
         </div>
 
         <div class="col">
@@ -52,11 +53,11 @@
 
 @section Scripts{
     <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
     <script>
 
         $(document).ready(async () => {
             await preencherCategoria();
-
         });
 
         async function preencherCategoria () {
@@ -65,7 +66,7 @@
                 response.forEach((item, y) => {
                     console.log(`categoria-item ${y + 1}`, item);
                     let option = $("<option>", { value: item.id, text: item.nome });
-                    $("#categoria").append(option);
+                    $("#categoriaObj_id").append(option);
                 });
             }).catch(e => {
                 console.log('error', e);
