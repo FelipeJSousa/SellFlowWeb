@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SellFlowWeb.Models.DataView.CategoriaDataView>
+
+@{
+    ViewData["Title"] = "Categoria";
+}
+
+<div class="row justify-content-end">
+    <div class="col-1 m-2">
+        <a asp-action="Criar" class="btn btn-primary">Novo</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-striped table-hover" id="tbcategorias">
+        <thead>
+            <tr id="tbheader">
+                <th>
+                    @*@Html.DisplayNameFor(model => model.imagemdestaque)*@
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.descricao)
+                </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody id="tbdata">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.imagemdiretorio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descricao)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Editar", "Categoria", new { id = item.id })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Excluir", "Excluir", "Categoria", new { id = item.id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center m-5">
+        <h5 id="message"></h5>
+        <h6 id="tempmessage">@TempData["message"]</h6>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status" id="load">
+        </div>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Voltar</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            //Carregarcategorias();
+            var categorias = @Html.Raw(Json.Serialize(Model))
+                console.log('lista de categorias', categorias)
+                $(".spinner-grow").css('display', 'none')
+            if (categorias.length < 1) {
+                $("#message").text("Não foi possivel obter a lista de categorias.");
+            }
+        })
+
+    </script>
+}

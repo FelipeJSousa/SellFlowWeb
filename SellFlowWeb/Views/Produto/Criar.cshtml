@@ -15,7 +15,6 @@
     <input asp-for="usuariovendedorObj.id" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
 
     <div class="row">
-
         <div class="mb-3">
             <label for="nome" class="form-label">Nome Produto</label>
             <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe o nome do produto.')">
