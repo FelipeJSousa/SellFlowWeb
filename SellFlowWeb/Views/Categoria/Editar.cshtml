@@ -1,0 +1,43 @@
+﻿@model SellFlowWeb.Models.DataView.CategoriaDataView
+@{
+    ViewData["Title"] = "Categoria";
+}
+
+<form asp-action="Salvar" id="Salvar">
+
+    <div class="row">
+        <input asp-for="id" hidden class="visually-hidden">
+        <input asp-for="ativo" hidden class="visually-hidden">
+        <input asp-for="imagemdiretorio" hidden class="visually-hidden">
+
+        <div class="mb-3">
+            <label asp-for="nome" class="control-label"></label>
+            <input asp-for="nome" class="form-control" onblur="ValidarCampo(this,'Informe o nome da categoria.')" />
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="descricao" class="form-label"></label>
+            <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição da categoria.')"></textarea>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-auto">
+
+        <span>@ViewBag.message</span>
+        <div class="col">
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Comun/main.js"></script>
+}

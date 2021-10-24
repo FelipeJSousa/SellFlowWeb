@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ApiRequest\" />
+    <Compile Remove="ApiRequest\**" />
+    <EmbeddedResource Remove="ApiRequest\**" />
+    <None Remove="ApiRequest\**" />
   </ItemGroup>
 
 </Project>
