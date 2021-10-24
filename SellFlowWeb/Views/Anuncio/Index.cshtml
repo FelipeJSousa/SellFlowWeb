@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model IEnumerable<SellFlowWeb.Models.DataView.AnuncioDataView>
+@{
+    ViewData["Title"] = "Produto";
+}
+
+<div class="row justify-content-end">
+    <div class="col-1 m-2">
+        <a asp-action="Criar" class="btn btn-primary">Novo</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-striped table-hover" id="tbprodutos">
+        <thead>
+            <tr id="tbheader">
+                <th>
+                    @Html.DisplayNameFor(model => model.id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.descricao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.produtoObj.nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.qtdeDisponivel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataCriacao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataEncerramento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.anuncioSituacaoObj.nome)
+                </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody id="tbdata">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.produtoObj.nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.qtdeDisponivel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataCriacao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataEncerramento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.anuncioSituacaoObj.nome)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Editar", "Anuncio", new { id = item.id, usuario = @HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Excluir", "Excluir", "Anuncio", new { id = item.id, usuario = @HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center m-5">
+        <h5 id="message"></h5>
+        <h6 id="tempmessage">@TempData["message"]</h6>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status" id="load">
+        </div>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Voltar</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            var produtos = @Html.Raw(Json.Serialize(Model))
+                console.log('lista de produtos', produtos)
+                $(".spinner-grow").css('display', 'none')
+            if (produtos.length < 1) {
+                $("#message").text("Não foi possivel obter a lista de anuncios.");
+            }
+        })
+
+    </script>
+}

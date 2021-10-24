@@ -35,7 +35,7 @@ namespace SellFlowWeb.Controllers
             return VerificarLogin(View());
         }
 
-        [Route("Editar/{usuario}/{id}")]
+        [Route("{controller}/Editar/{usuario}/{id}")]
         public async Task<IActionResult> Editar(long usuario, long id)
         {
             @ViewBag.message = TempData["message"];
