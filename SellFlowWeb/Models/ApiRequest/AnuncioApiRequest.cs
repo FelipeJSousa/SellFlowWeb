@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Models;
+using System;
 
-namespace Models
+namespace SellFlowWeb.Models.ApiRequest
 {
-    public class AnuncioModel : Model
+    public class AnuncioApiRequest : Model
     {
         public string nome { get; set; }
         public int qtdeDisponivel { get; set; }
@@ -11,9 +12,7 @@ namespace Models
         public DateTime dataEncerramento { get; set; }
         public bool ativo { get; set; }
         public long? produto { get; set; }
-        public long? anuncioSituacao { get; set; }
+        public long? anunciosituacao { get; set; }
 
-        public ProdutoModel produtoObj { get; set; }
-        public AnuncioSituacaoModel anuncioSituacaoObj { get; set; }
     }
 }
