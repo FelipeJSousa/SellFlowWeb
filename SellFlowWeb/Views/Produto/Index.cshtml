@@ -1,4 +1,7 @@
-﻿@model IEnumerable<SellFlowWeb.Models.DataView.ProdutoDataView>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model IEnumerable<SellFlowWeb.Models.DataView.ProdutoDataView>
 @{
     ViewData["Title"] = "Produto";
 }
@@ -32,32 +35,32 @@
             </tr>
         </thead>
         <tbody id="tbdata">
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.imagemdestaque)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.categoriaObj.nome)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Editar", "Produto", new { id = item.id })
-                </td>
-                <td>
-                    @Html.ActionLink("Excluir", "Excluir", "Produto", new { id = item.id })
-                </td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.imagemdestaque)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.categoriaObj.nome)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Editar", "Produto", new { id = item.id, usuario = @HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Excluir", "Excluir", "Produto", new { id = item.id, usuario = @HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value })
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
     <div class="d-flex justify-content-center m-5">
@@ -76,8 +79,8 @@
 </div>
 
 @section Scripts {
-<script src="~/js/Produto/ProdutoMain.js"></script>
-<script>
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
 
         $(document).ready(async () => {
             //CarregarProdutos();
@@ -117,5 +120,5 @@
             GeraTabela(produtoProps, 'tbheader');
         }
 
-</script>
+    </script>
 }

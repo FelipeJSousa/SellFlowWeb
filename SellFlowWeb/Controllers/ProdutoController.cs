@@ -9,6 +9,7 @@ using SellFlowWeb.Models.ApiRequest;
 using SellFlowWeb.Models.DataView;
 using AutoMapper;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace SellFlowWeb.Controllers
 {
@@ -21,7 +22,6 @@ namespace SellFlowWeb.Controllers
             _produtoClient = serviceProvider.GetService<IProdutoClient>();
         }
 
-        [Route("{controller}/{usuario}")]
         public async Task<IActionResult> Index(int usuario)
         {
             var _ret = await _produtoClient.GetAll(usuario);
@@ -40,7 +40,7 @@ namespace SellFlowWeb.Controllers
         {
             @ViewBag.message = TempData["message"];
             var ret = await _produtoClient.Get(id, usuario);
-            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(_ret.dados);
+            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(ret.dados);
             return VerificarLogin(View(_produtos.FirstOrDefault()));
         }
 
@@ -48,17 +48,25 @@ namespace SellFlowWeb.Controllers
         {
             var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
             var _produto = _mapper.Map<ProdutoApiRequest>(obj);
-
+            var idusuario = HttpContext.Session.GetInt32("idusuario").Value;
             ReturnModel<ProdutoModel> _ret = new();
             _ret = await _produtoClient.Save(_produto);
 
             if (!_ret.status)
             {
                 TempData["message"] = "Não foi possível Salvar!";
-                return View("Editar",obj.id);
+                if(obj.id > 0)
+                {
+                    return View("Editar", new { id = obj.id, usuario = idusuario});
+                }
+                else
+                {
+                    return View("Criar");
+                }
+
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { usuario = idusuario });
 
         }
 
@@ -69,10 +77,10 @@ namespace SellFlowWeb.Controllers
             if(!_ret.status)
             {
                 TempData["message"] = "Não foi possível Excluir!";
-                return View("Index");
+                return RedirectToAction("Index", new { usuario = HttpContext.Session.GetInt32("idusuario").Value });
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { usuario = HttpContext.Session.GetInt32("idusuario").Value });
         }
 
     }
