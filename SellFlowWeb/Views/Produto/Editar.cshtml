@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model SellFlowWeb.Models.DataView.ProdutoDataView
+@{
+    ViewData["Title"] = "Produto";
+}
+
+<form asp-action="Salvar">
+
+    <div class="row">
+
+        <input asp-for="id" hidden class="visually-hidden">
+        <input asp-for="ativo" hidden class="visually-hidden">
+        <input asp-for="imagemdestaque" hidden class="visually-hidden">
+        <input asp-for="usuariovendedor" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
+
+        <div class="mb-3">
+            <label asp-for="nome" class="control-label"></label>
+            <input asp-for="nome" class="form-control" />
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="descricao" class="form-label"></label>
+            <textarea type="text" class="form-control" asp-for="descricao"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="categoria" class="form-label"></label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoria">
+                <option selected>Selecione uma Categoria.</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-auto">
+
+        <span>@ViewBag.message</span>
+        <div class="col">
+            <button type="submit" id="btnsalvar" class="btn btn-primary">Salvar</button>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script>
+        const produtoModel = @Html.Raw(Json.Serialize(Model));
+
+        $(document).ready(async () => {
+            await preencherCategoria();
+
+           console.log('produtoModel',produtoModel);
+
+        });
+
+
+
+        async function preencherCategoria () {
+            await GetListCategoria().then(response => {
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#categoria").append(option);
+                    $('#categoria').val(@Model.categoria)
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        }
+    </script>
+}
