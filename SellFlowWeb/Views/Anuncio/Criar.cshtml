@@ -44,11 +44,6 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="dataCriacao" class="form-label"></label>
-            <input type="date" class="form-control" asp-for="dataCriacao" value="@DateTime.Now.ToString("yyyy-MM-dd")" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe a data de criação do anuncio.')" disabled readonly>
-        </div>
-
-        <div class="mb-3">
             <label asp-for="dataEncerramento" class="form-label"></label>
             <input type="date" class="form-control" asp-for="dataEncerramento" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe a data de encerrameto do anuncio.')">
         </div>
