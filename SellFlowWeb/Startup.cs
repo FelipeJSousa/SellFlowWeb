@@ -60,6 +60,9 @@ namespace SellFlowWeb
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Login}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "ProdutoIndex",
+                    pattern: "{controller=Produto}/{action=Index}/{usuario}");
             });
         }
     }

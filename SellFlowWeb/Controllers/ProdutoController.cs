@@ -21,10 +21,11 @@ namespace SellFlowWeb.Controllers
             _produtoClient = serviceProvider.GetService<IProdutoClient>();
         }
 
-        public async Task<IActionResult> Index()
+        [Route("{controller}/{usuario}")]
+        public async Task<IActionResult> Index(int usuario)
         {
-            var _ret = await _produtoClient.GetAll();
-            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(_ret.dados);
+            var _ret = await _produtoClient.GetAll(usuario);
+            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDataView>>(_ret.dados);
             return VerificarLogin(View(_produtos));
         }
 
@@ -34,10 +35,11 @@ namespace SellFlowWeb.Controllers
             return VerificarLogin(View());
         }
 
-        public async Task<IActionResult> Editar(long id)
+        [Route("Editar/{usuario}/{id}")]
+        public async Task<IActionResult> Editar(long usuario, long id)
         {
             @ViewBag.message = TempData["message"];
-            var _ret = await _produtoClient.Get(id);
+            var ret = await _produtoClient.Get(id, usuario);
             var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(_ret.dados);
             return VerificarLogin(View(_produtos.FirstOrDefault()));
         }
