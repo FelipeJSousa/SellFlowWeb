@@ -25,10 +25,15 @@ namespace SellFlowWeb
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(15);
                 options.Cookie.Name = "SellFlowApp";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
             services.AddHttpContextAccessor();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddSessionStateTempDataProvider();
             services.AddConfigurationIoC(Configuration);
         }
 
@@ -46,6 +51,7 @@ namespace SellFlowWeb
                 app.UseHsts();
             }
 
+            app.UseCookiePolicy();
             app.UseSession();
 
             app.UseHttpsRedirection();

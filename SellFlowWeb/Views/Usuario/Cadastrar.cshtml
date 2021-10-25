@@ -4,12 +4,12 @@
     ViewData["Title"] = "Cadastrar";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
-<h1>Cadastro</h1>
+<h1>Cadastro de Usuário</h1>
 
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="Salvar">
+        <form asp-action="Salvar" id="Salvar">
             <input asp-for="usuarioObj.permissao" value="1" hidden class="visually-hidden">
             <div class="form-group m-3">
                 <label asp-for="nome" class="control-label"></label>
