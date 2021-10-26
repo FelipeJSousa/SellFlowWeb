@@ -1,13 +1,33 @@
-﻿async function GetEnderecoByPessoa(idPessoa) {
+﻿async function GetCep(cep) {
+    let _cep = null;
+    let _error = '';
+
+    await $.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: `https://viacep.com.br/ws/${cep}/json/`,
+        success: response => {
+            cep = response;
+        },
+        failure: (response) => {
+            _error = response;
+        }
+    });
+
+    return await new Promise((resolve, reject) => {
+        resolve(_cep);
+        reject(_error);
+    });
+}
+
+async function GetEnderecoByPessoa(idPessoa) {
     let _listaEnderecos = [];
     let _error = '';
 
     await $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
-        data: Endereco,
-        dataType: "json",
-        url: "https://localhost:5001/api/Endereco",
+        url: "https://localhost:5001/api/Endereco/ObterPorPessoa?idPessoa"+idPessoa,
         success: response => {
             response.dados.forEach(x => _listaEnderecos.push(x));
         },

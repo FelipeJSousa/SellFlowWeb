@@ -149,9 +149,15 @@
                                     <input id="EnderecoCep" class="form-control" onblur="ValidarCampo(this,'Informe um CEP válido.')" />
                                 </div>
                             </div>
-                            <div class="form-group col">
-                                <label for="EnderecoLogradouro" class="control-label"></label>
-                                <input id="EnderecoLogradouro" class="form-control" onblur="ValidarCampo(this,'Informe o logradouro.')" />
+                            <div class="row  m-3">
+                                <div class="form-group col">
+                                    <label for="EnderecoLogradouro" class="control-label"></label>
+                                    <input id="EnderecoLogradouro" class="form-control" onblur="ValidarCampo(this,'Informe o logradouro.')" />
+                                </div>
+                                <div class="form-group col-2">
+                                <label for="EnderecoNumero" class="control-label"></label>
+                                <input id="EnderecoNumero" class="form-control" onblur="ValidarCampo(this,'Informe o número.')" />
+                            </div>
                             </div>
                             <div class="row  m-3">
                                 <div class="form-group col-4">
@@ -191,11 +197,31 @@
             $("#cpf").mask("999.999.999-99");
         });
 
+        $('#EnderecoCep').on('blur', async () => {
+
+            var inputCep = $("#EnderecoCep").val();
+            await GetCep(inputCep).then(response => {
+                if (response != null && response != undefined) {
+                    $("#EnderecoId").val(0),
+                    $("#EnderecoCep").val(response.cep),
+                    $("#EnderecoLogradouro").val(response.logradouro),
+                    $("#EnderecoBairro").val(reponse.bairro),
+                    $("#EnderecoCidade").val(reponse.localidade),
+                    $("#EnderecoEstado").val(response.uf)
+                }
+            }
+
+            ).catch(e => {
+                alert(`error ${e}`);
+            });
+
+        });
+
         async function SalvarEndereco() {
             const enderecoObj = {
                 id = $("#EnderecoId").val(),
                 cep = $("#EnderecoCep").val(),
-                logradouro = $("#EnderecoLogradouro").val(),
+                logradouro = $("#EnderecoLogradouro").val() + ', ' + $("#EnderecoNumero").val(),
                 bairro = $("#EnderecoBairro").val(),
                 cidade = $("#EnderecoCidade").val(),
                 Estado = $("#EnderecoEstado").val()
