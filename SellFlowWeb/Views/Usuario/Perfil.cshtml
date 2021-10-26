@@ -1,0 +1,221 @@
+﻿@model SellFlowWeb.Models.DataView.PessoaDataView
+
+@{
+    ViewData["Title"] = "Cadastrar";
+}
+<h1>Cadastro</h1>
+
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="Salvar">
+            <div class="container">
+                <input asp-for="id" value="1" hidden class="visually-hidden">
+                <input asp-for="usuarioObj.permissao" hidden class="visually-hidden">
+                <div class="row  m-3">
+                    <div class="form-group col">
+                        <label asp-for="nome" class="control-label"></label>
+                        <input asp-for="nome" class="form-control" onblur="ValidarCampo(this,'Informe o nome.')" />
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="sobrenome" class="control-label"></label>
+                        <input asp-for="sobrenome" class="form-control" onblur="ValidarCampo(this,'Informe o sobrenome.')" />
+                    </div>
+                </div>
+                <div class="row  m-3">
+                    <div class="form-group col">
+                        <label asp-for="cpf" class="control-label"></label>
+                        <input asp-for="cpf" class="form-control" onblur="ValidarCampo(this, 'Informe um CPF válido', { func : ValidarCPF(this.value ?? 0) })" disabled readonly />
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="dataNascimento" class="control-label"></label>
+                        <input asp-for="dataNascimento" type="date" class="form-control" onblur="ValidarCampo(this,'Informe uma data de nascimento.')" />
+                    </div>
+                </div>
+                <div class="row  m-3">
+                    <div class="form-group col">
+                        <label asp-for="usuarioObj.email" class="control-label"></label>
+                        <input asp-for="usuarioObj.email" type="email" class="form-control" onblur="ValidarCampo(this,'Informe um e-mail.')" disabled readonly />
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="usuarioObj.senha" class="control-label"></label>
+                        <input asp-for="usuarioObj.senha" type="password" value="*****" class="form-control" onblur="ValidarCampo(this,'Informe uma senha.')" />
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionEndereco">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="hEndereco">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEnderecos" aria-expanded="true" aria-controls="collapseEnderecos">
+                                Endereços
+                            </button>
+                        </h2>
+                        <div id="collapseEnderecos" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionEndereco">
+                            <div class="accordion-body p-3">
+                                <div class="row row-cols-auto p-2">
+                                    <a class="btn btn-primary" onclick="NovoEndereco()"><i class="bi bi-plus-square"></i> Novo Endereco</a>
+                                </div>
+                                <div class="row">
+                                    <table class="table table-striped table-hover" id="tbEnderecos">
+                                        <thead>
+                                            <tr id="tbheader">
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].id)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].logradouro)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].bairro)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].cidade)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].estado)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.enderecoList[0].cep)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbdata">
+                                            @if (Model.enderecoList != null && Model.enderecoList.Any())
+                                            {
+                                                @foreach (var item in Model.enderecoList)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.id)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.logradouro)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.bairro)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.cidade)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.estado)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.cep)
+                                                        </td>
+                                                        <td>
+                                                            <a href="" class="btn btn-primary">Editar</a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="" class="btn btn-primary">Excluir</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row row-cols-auto m-2">
+                    <span id="tempmessage">@TempData["message"]</span>
+                </div>
+                <div class="form-group m-2">
+                    <input type="button" value="Salvar" class="btn btn-primary" onclick="Submit('Salvar')" />
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal fade" id="ModalEndereco" tabindex="-1" aria-labelledby="ModalEnderecoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEnderecoLabel">Endereço</h5>
+                        <button type="button" class="btn-close" id="FecharModalEndereco" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="SalvarEndereco()" id="FormEndereco">
+                            <input id="EnderecoId" hidden class="visually-hidden"/>
+                            <div class="row  m-3">
+                                <div class="form-group col-4">
+                                    <label for="EnderecoCep" class="control-label"></label>
+                                    <input id="EnderecoCep" class="form-control" onblur="ValidarCampo(this,'Informe um CEP válido.')" />
+                                </div>
+                            </div>
+                            <div class="form-group col">
+                                <label for="EnderecoLogradouro" class="control-label"></label>
+                                <input id="EnderecoLogradouro" class="form-control" onblur="ValidarCampo(this,'Informe o logradouro.')" />
+                            </div>
+                            <div class="row  m-3">
+                                <div class="form-group col-4">
+                                    <label for="EnderecoBairro" class="control-label"></label>
+                                    <input id="EnderecoBairro" class="form-control" onblur="ValidarCampo(this,'Informe um bairro válido.')" />
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="EnderecoCidade" class="control-label"></label>
+                                    <input id="EnderecoCidade" class="form-control" onblur="ValidarCampo(this,'Informe uma cidade válido.')" />
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="EnderecoEstado" class="control-label"></label>
+                                    <input id="EnderecoEstado" class="form-control" onblur="ValidarCampo(this,'Informe um estado válido.')" />
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="Submit('FormEndereco')">Salvar Endereco</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/Usuario/Endereco/EnderecoMain.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#cpf").mask("999.999.999-99");
+        });
+
+        async function SalvarEndereco() {
+            const enderecoObj = {
+                id = $("#EnderecoId").val(),
+                cep = $("#EnderecoCep").val(),
+                logradouro = $("#EnderecoLogradouro").val(),
+                bairro = $("#EnderecoBairro").val(),
+                cidade = $("#EnderecoCidade").val(),
+                Estado = $("#EnderecoEstado").val()
+            };
+            await PostEndereco(enderecoObj).then(response => {
+                if (response != null && response != undefined) {
+
+                    var idPessoa = $('#Id').val();
+                    var listEndereco = GetEnderecoByPessoa(idPessoa);
+                    await LimparTabela('tbEnderecos');
+                    await PopulaTabela(listEndereco, 'tbData');
+                    $('#FecharModalEndereco').click();
+                }
+            }
+
+            ).catch(e => {
+                alert(`error ${e}`);
+            });
+
+            
+        }
+    </script>
+}

@@ -15,10 +15,15 @@ function ValidarCampo(field, error, { func, itemclass, labelclass} = { func : nu
         validation = func;
     }
     else {
-        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'EMAIL' || field.tagName === 'PASSWORD' || field.tagName === 'DATE') {
-            validation = field.value.length > 0;
+        if (field.tagName === 'PASSWORD') {
+            var value = field.value.replace(" ", "");
+            validation = value == '*****' ? false : field.value.length > 0;
         }
-        if (field.tagName === 'SELECT') {
+        else if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'EMAIL' || field.tagName === 'DATE') {
+            var value = field.value.replace(" ", "");
+            validation = value.length > 0;
+        }
+        else if (field.tagName === 'SELECT') {
             validation = field.selectedIndex != 0;
         }
     }

@@ -7,6 +7,8 @@ using System;
 using AutoMapper;
 using SellFlowWeb.Models.DataView;
 using SellFlowWeb.Models.ApiRequest;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace SellFlowWeb.Controllers
 {
@@ -56,6 +58,18 @@ namespace SellFlowWeb.Controllers
             TempData["message"] += "\nNão foi possível realizar o cadastro.";
             
             return View("Cadastrar");
+        }
+
+        public async Task<IActionResult> Perfil()
+        {
+            var redirect = VerificarLogin();
+            if(redirect is not null)
+            {
+                return redirect;
+            }
+            var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
+            var _ret = await _pessoaClient.GetPessoaByUsuario(HttpContext.Session.GetInt32("idusuario").Value);
+            return View(_mapper.Map<PessoaDataView>(_ret.dados.FirstOrDefault() ?? default));
         }
     }
 }
