@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using System.Collections.Generic;
+
+namespace Models
 {
     public class EnderecoModel : Model
     {
@@ -12,5 +14,6 @@
         public long pessoa { get; set; }
 
         public PessoaModel pessoaModel { get; set; }
+        public List<EnderecoModel> enderecoList { get; set; }
     }
 }

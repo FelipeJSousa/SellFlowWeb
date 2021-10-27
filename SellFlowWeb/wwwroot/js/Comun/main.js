@@ -1,6 +1,6 @@
 ﻿function Submit(formId) {
-    $('.form-control').each((i, ele) => $(`#${ele.name}`).blur());
-    $('.form-select').each((i, ele) => ele.click());
+    $(`#${formId}`).find('.form-control').each((i, ele) => $(`#${ele.id}`).blur());
+    $(`#${formId}`).find('.form-select').each((i, ele) => ele.click());
     if ($('.item-error').length > 0) {
         $('#tempmessage').text('Preencha todos os campos antes de continuar.')
     }
@@ -11,6 +11,10 @@
 
 function ValidarCampo(field, error, { func, itemclass, labelclass} = { func : null, itemclass : "item-error", labelclass : "label-error" }) {
     var validation = false;
+    func = func == undefined ? null : func;
+    itemclass = itemclass == undefined ? "item-error" : itemclass;
+    labelclass = labelclass == undefined ? "label-error" : labelclass;
+
     if (func != null) {
         validation = func;
     }
@@ -29,6 +33,10 @@ function ValidarCampo(field, error, { func, itemclass, labelclass} = { func : nu
     }
 
     Validar(field, validation, error, itemclass, labelclass);
+}
+
+function Invalidar() {
+    return false;
 }
 
 function Validar(field, validation, error, itemclass, labelclass) {

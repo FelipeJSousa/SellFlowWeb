@@ -18,6 +18,10 @@ namespace SellFlowWeb
                     .AfterMap((src, dest) => dest.usuarioObj.id =src.id)
                     .ReverseMap();
 
+                cfg.CreateMap<EnderecoDataView, EnderecoModel>().ReverseMap();
+                cfg.CreateMap<EnderecoApiRequest, EnderecoModel>().ReverseMap();
+                cfg.CreateMap<EnderecoApiRequest, EnderecoDataView>().ReverseMap();
+
                 cfg.CreateMap<UsuarioDataView, UsuarioModel>().ReverseMap();
                 cfg.CreateMap<UsuarioApiRequest, UsuarioModel>().ReverseMap();
                 cfg.CreateMap<UsuarioApiRequest, UsuarioDataView>()
