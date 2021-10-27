@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Models
 {
@@ -8,8 +9,11 @@ namespace Models
         public string sobrenome { get; set; }
         public string cpf { get; set; }
         public long? usuario { get; set; }
-        public UsuarioModel usuarioObj { get; set; }
         public DateTime dataNascimento { get; set; }
+
         public bool ativo { get; set; }
+
+        public UsuarioModel usuarioObj { get; set; }
+        public ICollection<EnderecoModel> enderecoList { get; set; }
     }
 }

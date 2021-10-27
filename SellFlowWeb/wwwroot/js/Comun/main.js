@@ -1,6 +1,6 @@
 ﻿function Submit(formId) {
-    $('.form-control').each((i, ele) => $(`#${ele.name}`).blur());
-    $('.form-select').each((i, ele) => ele.click());
+    $(`#${formId}`).find('.form-control').each((i, ele) => $(`#${ele.id}`).blur());
+    $(`#${formId}`).find('.form-select').each((i, ele) => ele.click());
     if ($('.item-error').length > 0) {
         $('#tempmessage').text('Preencha todos os campos antes de continuar.')
     }
@@ -11,19 +11,32 @@
 
 function ValidarCampo(field, error, { func, itemclass, labelclass} = { func : null, itemclass : "item-error", labelclass : "label-error" }) {
     var validation = false;
+    func = func == undefined ? null : func;
+    itemclass = itemclass == undefined ? "item-error" : itemclass;
+    labelclass = labelclass == undefined ? "label-error" : labelclass;
+
     if (func != null) {
         validation = func;
     }
     else {
-        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'EMAIL' || field.tagName === 'PASSWORD' || field.tagName === 'DATE') {
-            validation = field.value.length > 0;
+        if (field.tagName === 'PASSWORD') {
+            var value = field.value.replace(" ", "");
+            validation = value == '*****' ? false : field.value.length > 0;
         }
-        if (field.tagName === 'SELECT') {
+        else if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'EMAIL' || field.tagName === 'DATE') {
+            var value = field.value.replace(" ", "");
+            validation = value.length > 0;
+        }
+        else if (field.tagName === 'SELECT') {
             validation = field.selectedIndex != 0;
         }
     }
 
     Validar(field, validation, error, itemclass, labelclass);
+}
+
+function Invalidar() {
+    return false;
 }
 
 function Validar(field, validation, error, itemclass, labelclass) {

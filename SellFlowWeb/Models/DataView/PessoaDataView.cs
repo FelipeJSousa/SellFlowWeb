@@ -1,5 +1,6 @@
 ﻿using Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,5 +30,8 @@ namespace SellFlowWeb.Models.DataView
 
         [DisplayName("Ativo")]
         public bool ativo { get; set; }
+
+        [DisplayName("Endereços")]
+        public List<EnderecoDataView> enderecoList { get; set; }
     }
 }
