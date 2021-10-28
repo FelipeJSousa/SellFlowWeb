@@ -32,8 +32,7 @@ namespace SellFlowWeb.Controllers
         {
             var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
             var _obj = _mapper.Map<PessoaModel>(obj);
-
-
+            
             var _objusu = _mapper.Map<UsuarioApiRequest>(_obj.usuarioObj);
             var retusu = await _usuarioClient.Save(_objusu);
             if (retusu.status)
@@ -60,6 +59,8 @@ namespace SellFlowWeb.Controllers
             return View("Cadastrar");
         }
 
+        [HttpGet("Usuario")]
+        [HttpGet("Perfil")]
         public async Task<IActionResult> Perfil()
         {
             var redirect = VerificarLogin();

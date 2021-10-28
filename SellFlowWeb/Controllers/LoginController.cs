@@ -40,7 +40,7 @@ namespace SellFlowWeb.Controllers
                 } 
             }
             TempData["message"] = "Não foi possível realizar o login.";
-            return VerificarLogin(View("Index"));
+            return View("Index");
         }
 
         public IActionResult Logout()
