@@ -9,5 +9,7 @@ namespace ApiClient.Interfaces
         Task<ReturnModel<List<AnuncioModel>>> GetAll(long usuario);
 
         Task<ReturnModel<List<AnuncioModel>>> Get(long id, long usuario);
+
+        Task<ReturnModel<List<AnuncioModel>>> GetPublicados();
     }
 }

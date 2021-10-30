@@ -11,6 +11,7 @@ namespace SellFlowWeb.Models.ApiRequest
         public DateTime dataCriacao { get; set; }
         public DateTime dataEncerramento { get; set; }
         public bool ativo { get; set; }
+        public double valor { get; set; }
         public long? produto { get; set; }
         public long? anunciosituacao { get; set; }
 

@@ -25,11 +25,20 @@
             <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição do produto.')"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="categoriaObj" class="form-label"></label>
-            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoriaObj.id" onclick="ValidarCampo(this, 'Selecione uma categoria para o produto.')" onblur="ValidarCampo(this, 'Selecione uma categoria para o produto.')">
-                <option selected>Selecione uma Categoria.</option>
-            </select>
+        <div class="row  my-3">
+            <div class="form-group col-3 me-2">
+                <label for="valorDecimal" class="form-label">Valor do Produto</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+                    <input type="text" class="form-control" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do produto.')">
+                </div>
+            </div>
+            <div class="form-group col">
+                <label asp-for="categoriaObj" class="form-label"></label>
+                <select class="form-select" aria-label="CategoriaProduto" asp-for="categoriaObj.id" onclick="ValidarCampo(this, 'Selecione uma categoria para o produto.')" onblur="ValidarCampo(this, 'Selecione uma categoria para o produto.')">
+                    <option selected>Selecione uma Categoria.</option>
+                </select>
+            </div>
         </div>
 
     </div>
@@ -42,7 +51,7 @@
         </div>
 
         <div class="col">
-            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+            @Html.ActionLink("Voltar", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
         </div>
 
     </div>
@@ -52,16 +61,18 @@
 @section Scripts{
     <script src="~/js/Produto/ProdutoMain.js"></script>
     <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
     <script>
-        const produtoModel = @Html.Raw(Json.Serialize(Model));
 
         $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
             await preencherCategoria();
 
            console.log('produtoModel',produtoModel);
 
         });
 
+        const produtoModel = @Html.Raw(Json.Serialize(Model));
 
 
         async function preencherCategoria () {

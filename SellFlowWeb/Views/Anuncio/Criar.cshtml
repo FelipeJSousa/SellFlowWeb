@@ -32,10 +32,15 @@
                 {
                     foreach (var item in ViewBag.produtos)
                     {
-                        <option value="@item.id">@item.nome</option>
+                        <option value="@item.id">@item.nome - R$@item.valorDecimal</option>
                     }
                 }
             </select>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+            <input type="text" class="form-control" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do anuncio.')">
         </div>
 
         <div class="mb-3">
@@ -58,8 +63,9 @@
             <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
         </div>
 
+
         <div class="col">
-            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+            @Html.ActionLink("Voltar", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
         </div>
 
     </div>
@@ -68,4 +74,12 @@
 
 @section Scripts{
     <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
+        });
+
+    </script>
 }

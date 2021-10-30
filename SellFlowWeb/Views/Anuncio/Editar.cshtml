@@ -1,4 +1,6 @@
-﻿@model SellFlowWeb.Models.DataView.AnuncioDataView
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model SellFlowWeb.Models.DataView.AnuncioDataView
 @{
     ViewData["Title"] = "Anuncio";
 }
@@ -33,6 +35,11 @@
             </select>
         </div>
 
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+            <input type="text" class="form-control" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do anuncio.')">
+        </div>
+
         <div class="mb-3">
             <label asp-for="qtdeDisponivel" class="form-label"></label>
             <input type="number" class="form-control" asp-for="qtdeDisponivel" onblur="ValidarCampo(this,'Informe a quantidade disponível.')">
@@ -53,7 +60,7 @@
             <label for="anunciosituacaoObj_id" class="form-label">Situação</label>
             <select class="form-select" aria-label="CategoriaProduto" asp-for="anuncioSituacaoObj.id" onclick="ValidarCampo(this, 'Selecione a situação do anuncio.')" onblur="ValidarCampo(this, 'Selecione o situação do anuncio.')">
                 <option selected>Selecione a situação.</option>
-                
+
             </select>
         </div>
 
@@ -67,7 +74,7 @@
         </div>
 
         <div class="col">
-            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+            @Html.ActionLink("Voltar", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
         </div>
 
     </div>
@@ -75,25 +82,28 @@
 </form>
 
 @section Scripts{
-<script src="~/js/Anuncio/AnuncioMain.js"></script>
-<script src="~/js/Comun/main.js"></script>
-<script>
-    $(document).ready( async () => {
-        $('#produto_id').val(@Model.produtoObj.id);
-        await preencherSituacao();
-    });
-       
-    async function preencherSituacao () {
-        await GetListSituacao().then(response => {
-            console.log(response)
-            response.forEach((item, y) => {
-                let option = $("<option>", { value: item.id, text: item.nome });
-                $("#anuncioSituacaoObj_id").append(option);
-                $('#anuncioSituacaoObj_id').val(@Model.anuncioSituacaoObj.id)
-            });
-        }).catch(e => {
-            console.log('error', e);
+    <script src="~/js/Anuncio/AnuncioMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
+            $('#produto_id').val(@Model.produtoObj.id);
+            await preencherSituacao();
         });
-    }
-</script>
+
+        async function preencherSituacao () {
+            await GetListSituacao().then(response => {
+                console.log(response)
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#anuncioSituacaoObj_id").append(option);
+                    $('#anuncioSituacaoObj_id').val(@Model.anuncioSituacaoObj.id)
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        }
+    </script>
 }
