@@ -14,6 +14,7 @@ namespace Models
         public long? anuncioSituacao { get; set; }
         public double valor { get; set; }
         public string percentPromocao { get; set; }
+        public string vendedor { get; set; }
 
         public ProdutoModel produtoObj { get; set; }
         public AnuncioSituacaoModel anuncioSituacaoObj { get; set; }

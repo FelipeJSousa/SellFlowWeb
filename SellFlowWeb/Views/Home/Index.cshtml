@@ -1,9 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model IEnumerable<SellFlowWeb.Models.DataView.AnuncioDataView>
+
 @{
     ViewData["Title"] = "Tela Inicial";
 }
 
-<div class="text-center">
+<div class="text-center m-2">
     <h3>Bem Vindo @HttpContextAccessor.HttpContext.Session.GetString("nome") @HttpContextAccessor.HttpContext.Session.GetString("sobrenome")</h3>
 </div>
+
+@if (Model.Any())
+{
+    <div class="m-5">
+        <h3>Anuncios</h3>
+        <hr/>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync("_AnuncioCard", item)
+            }
+        </div>
+    </div>
+}

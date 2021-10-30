@@ -38,5 +38,9 @@ namespace SellFlowWeb.Models.DataView
         [DisplayName("Situacao")]
         public AnuncioSituacaoDataView anuncioSituacaoObj { get; set; }
 
+        [DisplayName("Vendedor")]
+        public string vendedor { get; set; }
+
+
     }
 }

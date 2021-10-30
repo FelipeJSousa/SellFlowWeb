@@ -4,16 +4,31 @@ using Microsoft.AspNetCore.Mvc;
 using SellFlowWeb.Models;
 using System.Diagnostics;
 using System;
+using ApiClient.Interfaces;
+using System.Threading.Tasks;
+using AutoMapper;
+using SellFlowWeb.Models.DataView;
+using System.Collections.Generic;
 
 namespace SellFlowWeb.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IServiceProvider serviceProvider) : base(serviceProvider) { }
-
-        public IActionResult Index()
+        private IAnuncioClient _anuncioClient;
+        public HomeController(IServiceProvider serviceProvider) : base(serviceProvider) 
         {
-            return VerificarLogin(View());
+            _anuncioClient = serviceProvider.GetService<IAnuncioClient>();
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var obj = await _anuncioClient.GetPublicados();
+            if (obj.status)
+            {
+                var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
+                return VerificarLogin(View(anuncioList));
+            }
+            return VerificarLogin(View(new List<AnuncioDataView>()));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
