@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SellFlowWeb.Models.DataView
 {
@@ -26,6 +27,13 @@ namespace SellFlowWeb.Models.DataView
 
         [DisplayName("Produto")]
         public ProdutoDataView produtoObj { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayName("Valor do Anuncio")]
+        public string valorDecimal { get; set; }
+
+        [DisplayName("Desconto")]
+        public string percentPromocao { get; set; }
 
         [DisplayName("Situacao")]
         public AnuncioSituacaoDataView anuncioSituacaoObj { get; set; }

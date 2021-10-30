@@ -28,6 +28,9 @@
                     @Html.DisplayNameFor(model => model.descricao)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.valorDecimal)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.categoriaObj.nome)
                 </th>
                 <th> </th>
@@ -49,6 +52,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.valorDecimal)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.categoriaObj.nome)

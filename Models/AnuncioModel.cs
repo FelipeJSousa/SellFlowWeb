@@ -12,6 +12,8 @@ namespace Models
         public bool ativo { get; set; }
         public long? produto { get; set; }
         public long? anuncioSituacao { get; set; }
+        public double valor { get; set; }
+        public string percentPromocao { get; set; }
 
         public ProdutoModel produtoObj { get; set; }
         public AnuncioSituacaoModel anuncioSituacaoObj { get; set; }

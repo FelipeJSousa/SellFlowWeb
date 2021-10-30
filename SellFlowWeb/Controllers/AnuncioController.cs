@@ -26,17 +26,9 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index(int usuario)
         {
-            try
-            {
-                var _ret = await _anuncioClient.GetAll(usuario);
-                var _anuncios = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(_ret.dados);
-                return VerificarLogin(View(_anuncios));
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            var _ret = await _anuncioClient.GetAll(usuario);
+            var _anuncios = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(_ret.dados);
+            return VerificarLogin(View(_anuncios));
         }
 
         public IActionResult Criar()
@@ -69,7 +61,7 @@ namespace SellFlowWeb.Controllers
             if (!_ret.status)
             {
                 TempData["message"] = "Não foi possível Salvar!";
-                if (obj.id > 0)
+                if (obj.id.HasValue && obj.id > 0)
                 {
                     return View("Editar", new { id = obj.id, usuario = idusuario });
                 }

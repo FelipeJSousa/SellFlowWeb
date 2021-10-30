@@ -20,13 +20,15 @@ namespace SellFlowWeb.Models.DataView
         [DisplayName("Ativo")]
         public bool ativo { get; set; }
 
-
         [DisplayName("Curtidas")]
         public long curtidas { get; set; }
 
         [Required]
         [DisplayName("Categoria")]
         public CategoriaDataView categoriaObj { get; set; }
+
+        [DisplayName("Valor do Produto")]
+        public string valorDecimal { get; set; }
 
         [Required]
         [DisplayName("Vendedor")]
