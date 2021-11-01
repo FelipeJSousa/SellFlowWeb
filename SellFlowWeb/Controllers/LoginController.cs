@@ -36,6 +36,8 @@ namespace SellFlowWeb.Controllers
                     HttpContext.Session.SetString("nome", _retUsuario.dados.nome);
                     HttpContext.Session.SetString("sobrenome", _retUsuario.dados.sobrenome);
                     HttpContext.Session.SetString("cpf", _retUsuario.dados.cpf);
+                    HttpContext.Session.SetString("token", _retUsuario.dados.token);
+                    
                     return RedirectToAction("Index", "Home");
                 } 
             }
@@ -45,6 +47,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Logout()
         {
+            HttpContext.Session.Remove("token");
             HttpContext.Session.Clear();
             return View("Index");
         }
