@@ -7,6 +7,7 @@ async function GetCep(cep) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: `https://viacep.com.br/ws/${cep}/json/`,
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             console.log('Inner Cep', response);
             _cep = response;
@@ -56,6 +57,7 @@ async function GetEnderecoByPessoa(idPessoa) {
     await $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         url: "https://localhost:5001/api/Endereco/ObterPorPessoa?idPessoa="+idPessoa,
         success: response => {
             response.dados.forEach(x => _listaEnderecos.push(x));
@@ -80,6 +82,7 @@ async function SendEndereco(obj) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(obj),
         dataType: "json",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         url: "https://localhost:5001/api/Endereco",
         success: response => {
             endereco = response.dados;
@@ -117,6 +120,7 @@ async function ExcluirEndereco(id) {
         type: "DELETE",
         contentType: "application/json; charset=utf-8",
         url: "https://localhost:5001/api/Endereco?id="+id,
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             $(`#linktoeditar_${id}`).closest('tr').remove()
         },

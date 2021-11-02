@@ -3,6 +3,7 @@
         senha = $('#senha').val()
 
     await Validar(email, senha).then(async resp => {
+        sessionStorage.setItem("token", resp.token);
         await Logar(resp).then(response => {
             document.location.href = '/Home/Index';
         });
