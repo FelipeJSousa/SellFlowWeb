@@ -1,20 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ApiClient.Interfaces;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Models;
+using SellFlowWeb.Models.ApiRequest;
 
 namespace SellFlowWeb.Controllers
 {
     public class LoginController : BaseController
     {
-        private readonly IUsuarioClient _usuarioClient;
+        private readonly IPessoaClient _pessoaClient;
         public LoginController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _usuarioClient = serviceProvider.GetService<IUsuarioClient>();
+            _pessoaClient = serviceProvider.GetService<IPessoaClient>();
         }
 
         public IActionResult Index()
@@ -22,21 +22,24 @@ namespace SellFlowWeb.Controllers
             HttpContext.Session.Clear();
             return View();
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> Auth(UsuarioModel obj)
+        [HttpPost("[controller]/Auth")]
+        public async Task<IActionResult> Auth([FromBody]ApiRequestAuth obj)
         {
-            if (!string.IsNullOrWhiteSpace(obj.email) && !string.IsNullOrWhiteSpace(obj.senha))
+            if (obj.id > 0 && !string.IsNullOrWhiteSpace(obj.token))
             {
-                var _obj = new Mapper(AutoMapperConfig.RegisterMappings()).Map<UsuarioModel>(obj);
-                var _retUsuario = await _usuarioClient.Validar(_obj);
-                if (_retUsuario != null && _retUsuario.status)
+                var _ret = await _pessoaClient.GetPessoaByUsuario(obj.id);
+                if (_ret != null && _ret.status && _ret.dados.Count > 0)
                 {
-                    HttpContext.Session.SetInt32("idusuario", ((int)_retUsuario.dados.usuarioObj.id));
-                    HttpContext.Session.SetString("email", _retUsuario.dados.usuarioObj.email);
-                    HttpContext.Session.SetString("nome", _retUsuario.dados.nome);
-                    HttpContext.Session.SetString("sobrenome", _retUsuario.dados.sobrenome);
-                    HttpContext.Session.SetString("cpf", _retUsuario.dados.cpf);
-                    return RedirectToAction("Index", "Home");
+                    var _pessoa = _ret.dados.FirstOrDefault();
+                    HttpContext.Session.SetInt32("idusuario", ((int)_pessoa.usuarioObj.id));
+                    HttpContext.Session.SetString("email", _pessoa.usuarioObj.email);
+                    HttpContext.Session.SetString("nome", _pessoa.nome);
+                    HttpContext.Session.SetString("sobrenome", _pessoa.sobrenome);
+                    HttpContext.Session.SetString("cpf", _pessoa.cpf);
+                    HttpContext.Session.SetString("token", obj.token);
+                    return Ok(true);
                 } 
             }
             TempData["message"] = "Não foi possível realizar o login.";

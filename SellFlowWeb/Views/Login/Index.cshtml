@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<form asp-action="Auth">
+<form action="javascript:RealizarLogin()">
 
     <div class="row">
 
@@ -21,7 +21,7 @@
 
     </div>
     <div class="row row-cols-auto">
-        <span>@TempData["message"]</span>
+        <span id="message">@TempData["message"]</span>
     </div>
     <div class="row row-cols-auto">
         <div class="col">
@@ -37,5 +37,5 @@
 </form>
 
 @section Scripts{
-
+    <script src="~/js/Login/LoginMain.js"></script>
 }

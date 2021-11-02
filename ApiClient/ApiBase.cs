@@ -1,8 +1,11 @@
 ﻿using ApiClient.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +15,9 @@ namespace ApiClient
     {
         private Uri _UrlBase = new("https://localhost:5001/api/");
 
-        private readonly HttpClient _httpClient = new();
+        private static HttpContext _httpContext => new HttpContextAccessor().HttpContext;
+
+        private readonly HttpClient _httpClient = NewHttpClient();
 
         public async Task<ReturnModel<T>> GetAsync<T>(Uri requestUrl)
         {
@@ -53,10 +58,21 @@ namespace ApiClient
             uriBuilder.Query = queryString;
             return uriBuilder.Uri;
         }
+
         public HttpContent CreateHttpContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content, IgnoreNullSettings);
             return new StringContent(json, Encoding.UTF8, "application/json");
+        }
+
+        public static HttpClient NewHttpClient()
+        {
+            HttpClient client = new ();
+            if (!string.IsNullOrWhiteSpace(_httpContext?.Session?.GetString("token")?.ToString()))
+            {
+                client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Bearer " + _httpContext?.Session?.GetString("token").ToString());
+            }
+            return client;
         }
 
         public static JsonSerializerSettings IgnoreNullSettings => new() { NullValueHandling = NullValueHandling.Ignore };
