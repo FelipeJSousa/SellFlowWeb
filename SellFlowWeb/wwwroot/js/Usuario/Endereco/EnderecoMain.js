@@ -7,7 +7,7 @@ async function GetCep(cep) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: `https://viacep.com.br/ws/${cep}/json/`,
-        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
+        
         success: response => {
             console.log('Inner Cep', response);
             _cep = response;
