@@ -7,6 +7,7 @@ async function GetListProduto() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: "https://localhost:5001/api/Produto",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             response.dados.forEach(x => _listaProdutos.push(x));
         },
@@ -30,6 +31,7 @@ async function GetListCategoria() {
         contentType: "application/json; charset=utf-8",
         data: "{}",
         dataType: "json",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         url: "https://localhost:5001/api/Categoria",
         success: response => {
             response.dados.forEach(x => _listaCategoria.push(x));

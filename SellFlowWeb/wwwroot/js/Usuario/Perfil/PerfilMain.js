@@ -59,6 +59,7 @@ async function SavePessoa(obj) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(obj),
         dataType: "json",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         url: "https://localhost:5001/api/Pessoa",
         success: response => {
             pessoa = response.dados;
@@ -83,6 +84,7 @@ async function SaveUsuario(obj) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(obj),
         dataType: "json",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         url: "https://localhost:5001/api/Usuario",
         success: response => {
             pessoa = response.dados;
