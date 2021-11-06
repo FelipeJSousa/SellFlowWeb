@@ -6,7 +6,7 @@ async function GetListProduto() {
     await $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: "https://localhost:5001/api/Produto",
+        url: ApiURL + "/Produto",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             response.dados.forEach(x => _listaProdutos.push(x));
@@ -32,7 +32,7 @@ async function GetListCategoria() {
         data: "{}",
         dataType: "json",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
-        url: "https://localhost:5001/api/Categoria",
+        url: ApiURL + "/Categoria",
         success: response => {
             response.dados.forEach(x => _listaCategoria.push(x));
         },

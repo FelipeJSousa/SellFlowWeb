@@ -17,11 +17,11 @@ namespace Models
 
         public long categoria { get; set; }
 
-        public long usuariovendedor { get; set; }
+        public long usuario { get; set; }
         
         public double valor { get; set; }
 
-        public UsuarioModel usuariovendedorObj { get; set; }
+        public UsuarioModel usuarioObj { get; set; }
         public CategoriaModel categoriaObj { get; set; }
     }
 }

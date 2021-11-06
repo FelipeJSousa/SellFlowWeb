@@ -15,6 +15,9 @@ namespace SellFlowWeb.Models.DataView
         [DisplayName("Descrição do Produto")]
         public string descricao { get; set; }
 
+        [DisplayName("Imagem Destaque Caminho")]
+        public string imagemdestaque { get; set; }
+
         [DisplayName("Imagem Destaque")]
         public IFormFile imagemArquivo { get; set; }
 

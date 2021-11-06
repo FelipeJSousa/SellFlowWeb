@@ -32,6 +32,7 @@ namespace SellFlowWeb
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
             services.AddHttpContextAccessor();
 
             services.AddControllersWithViews()
@@ -63,7 +64,7 @@ namespace SellFlowWeb
                 .AllowCredentials());
 
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

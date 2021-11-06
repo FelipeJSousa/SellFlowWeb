@@ -12,8 +12,7 @@ namespace ApiClient
 {
     public class ApiBase : IApiBase
     {
-        private Uri _UrlBase = new("https://localhost:5001/api/");
-        //private Uri _UrlBase = new("http://felipejsousa-001-site1.itempurl.com/api/");
+        private Uri _UrlBase = new(BaseUrl.Api);
 
         private static HttpContext _httpContext => new HttpContextAccessor().HttpContext;
 

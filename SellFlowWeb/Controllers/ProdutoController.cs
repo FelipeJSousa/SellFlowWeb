@@ -40,17 +40,17 @@ namespace SellFlowWeb.Controllers
         {
             @ViewBag.message = TempData["message"];
             var ret = await _produtoClient.Get(id, usuario);
-            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDisplayDataView>>(ret.dados);
+            var _produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<ProdutoDataView>>(ret.dados);
             return VerificarLogin(View(_produtos.FirstOrDefault()));
         }
 
         public async Task<IActionResult> Salvar(ProdutoDataView obj)
         {
             var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
-            var _produto = _mapper.Map<ProdutoModel>(obj);
+            var _produto = _mapper.Map<ProdutoApiRequest>(obj);
             var idusuario = HttpContext.Session.GetInt32("idusuario").Value;
             ReturnModel<ProdutoModel> _ret = new();
-            _ret = await _produtoClient.Save(_produto);
+            _ret = await _produtoClient.Save(_mapper.Map<ProdutoModel>(_produto));
 
             if (!_ret.status)
             {

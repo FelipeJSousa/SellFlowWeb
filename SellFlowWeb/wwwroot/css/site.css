@@ -12,6 +12,15 @@ a {
   color: #0366d6;
 }
 
+.imgCard {
+    max-height: 15rem;
+}
+
+img {
+    max-width: 15rem !important;
+    max-height: 15rem;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

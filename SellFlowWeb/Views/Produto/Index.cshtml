@@ -16,9 +16,6 @@
         <thead>
             <tr id="tbheader">
                 <th>
-                    @*@Html.DisplayNameFor(model => model.imagemdestaque)*@
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.id)
                 </th>
                 <th>
@@ -41,9 +38,6 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.imagemdestaque)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.id)
                     </td>

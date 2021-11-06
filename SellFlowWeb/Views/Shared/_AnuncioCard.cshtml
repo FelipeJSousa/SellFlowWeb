@@ -1,9 +1,14 @@
-﻿@model SellFlowWeb.Models.DataView.AnuncioDataView
+﻿@using Models
+@model SellFlowWeb.Models.DataView.AnuncioDataView
 
 
 <div class="col">
     <div class="card h-100">
-        <img src="@Model.produtoObj.imagemdestaque" class="card-img-top" alt="...">
+        @{ 
+            //var src = BaseUrl.Api + "Imagens/Produto/" + Model.produtoObj.id;
+            <img src="@Model.produtoObj.imagemdestaque" class="card-img-top imgCard" alt="...">
+
+        }
         @if (double.Parse(Model.percentPromocao.Replace("%", "")) > 0)
         {
             <span class="badge rounded-pill bg-success">Desconto @Model.percentPromocao</span>
