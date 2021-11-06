@@ -58,7 +58,7 @@ async function GetEnderecoByPessoa(idPessoa) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
-        url: "https://localhost:5001/api/Endereco/ObterPorPessoa?idPessoa="+idPessoa,
+        url: ApiURL + "/Endereco/ObterPorPessoa?idPessoa="+idPessoa,
         success: response => {
             response.dados.forEach(x => _listaEnderecos.push(x));
         },
@@ -83,7 +83,7 @@ async function SendEndereco(obj) {
         data: JSON.stringify(obj),
         dataType: "json",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
-        url: "https://localhost:5001/api/Endereco",
+        url: ApiURL + "/Endereco",
         success: response => {
             endereco = response.dados;
         },
@@ -119,7 +119,7 @@ async function ExcluirEndereco(id) {
     await $.ajax({
         type: "DELETE",
         contentType: "application/json; charset=utf-8",
-        url: "https://localhost:5001/api/Endereco?id="+id,
+        url: ApiURL + "/Endereco?id="+id,
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             $(`#linktoeditar_${id}`).closest('tr').remove()

@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 using Models;
 
 namespace SellFlowWeb.Models.DataView
 {
-    public class ProdutoDataView : Model
+    public class ProdutoDisplayDataView : Model
     {
         [Required]
         [DisplayName("Nome do Produto")]
@@ -15,8 +14,8 @@ namespace SellFlowWeb.Models.DataView
         [DisplayName("Descrição do Produto")]
         public string descricao { get; set; }
 
-        [DisplayName("Imagem Destaque")]
-        public IFormFile imagemArquivo { get; set; }
+        [DisplayName("Caminho Imagem Destaque")]
+        public string imagemdestaque { get; set; }
 
         [DisplayName("Ativo")]
         public bool ativo { get; set; }

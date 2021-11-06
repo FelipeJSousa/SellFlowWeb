@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Models
 {
     public class ProdutoModel : Model
     {
@@ -7,6 +9,7 @@
         public string descricao { get; set; }
 
         public string imagemdestaque { get; set; }
+        public IFormFile imagemArquivo { get; set; }
 
         public bool ativo { get; set; }
 

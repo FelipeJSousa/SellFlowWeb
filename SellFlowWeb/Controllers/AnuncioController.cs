@@ -34,7 +34,7 @@ namespace SellFlowWeb.Controllers
         public IActionResult Criar()
         {
             @ViewBag.message = TempData["message"];
-            @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDataView>>(
+            @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDisplayDataView>>(
                                             _produtoClient.GetAll(HttpContext.Session.GetInt32("idusuario").Value).GetAwaiter().GetResult().dados);
             return VerificarLogin(View());
         }
@@ -43,7 +43,7 @@ namespace SellFlowWeb.Controllers
         public async Task<IActionResult> Editar(long usuario, long id)
         {
             @ViewBag.message = TempData["message"];
-            @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDataView>>(
+            @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDisplayDataView>>(
                                             _produtoClient.GetAll(HttpContext.Session.GetInt32("idusuario").Value).GetAwaiter().GetResult().dados);
             var ret = await _anuncioClient.Get(id, usuario);
             var _anuncios = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<AnuncioDataView>>(ret.dados);

@@ -15,7 +15,10 @@ async function Logar(access) {
     await $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "https://localhost:4001/Login/Auth",
+        url: WebURL + "/Login/Auth",
+        headers: {
+            origin: "https://localhost:4001"
+        },
         dataType: 'json',
         data: JSON.stringify(access),
         success: response => {
@@ -44,7 +47,10 @@ async function Validar(email, senha) {
     await $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "https://localhost:5001/api/Acesso/Login",
+        url: ApiURL + "/Acesso/Login",
+        headers: {
+            origin: "https://localhost:4001"
+        },
         dataType: 'json',
         data: JSON.stringify(obj),
         success: response => {

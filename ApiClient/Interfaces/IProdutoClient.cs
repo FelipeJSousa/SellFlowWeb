@@ -9,5 +9,6 @@ namespace ApiClient.Interfaces
         Task<ReturnModel<List<ProdutoModel>>> GetAll(long usuario);
 
         Task<ReturnModel<List<ProdutoModel>>> Get(long id, long usuario);
+        Task<ReturnModel<ProdutoModel>> Save(ProdutoModel obj);
     }
 }

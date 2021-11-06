@@ -56,6 +56,13 @@ namespace SellFlowWeb
             app.UseCookiePolicy();
             app.UseSession();
 
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

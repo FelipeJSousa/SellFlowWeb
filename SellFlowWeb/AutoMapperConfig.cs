@@ -30,13 +30,25 @@ namespace SellFlowWeb
                 cfg.CreateMap<CategoriaApiRequest, CategoriaModel>().ReverseMap();
                 cfg.CreateMap<CategoriaApiRequest, CategoriaDataView>().ReverseMap();
 
-                cfg.CreateMap<ProdutoDataView, ProdutoModel>()
+                cfg.CreateMap<ProdutoDisplayDataView, ProdutoModel>()
                     .ForMember(dest => dest.valor, opt => opt.MapFrom(src => double.Parse(src.valorDecimal)))
                     .ReverseMap()
                     .ForMember(dest => dest.valorDecimal, opt => opt.MapFrom(src => src.valor.ToString("N2")));
                 cfg.CreateMap<ProdutoApiRequest, ProdutoModel>().ReverseMap();
+                cfg.CreateMap<ProdutoApiRequest, ProdutoDisplayDataView>().ReverseMap()
+                    .ForMember(dest => dest.usuario, opt => opt.MapFrom(src => src.usuariovendedorObj.id))
+                    .ForMember(dest => dest.categoria, opt => opt.MapFrom(src => src.categoriaObj.id))
+                    .ForMember(dest => dest.valor, opt => opt.MapFrom(src => double.Parse(src.valorDecimal)))
+                    .ReverseMap()
+                    .ForMember(dest => dest.valorDecimal, opt => opt.MapFrom(src => src.valor.ToString("N2")));
                 cfg.CreateMap<ProdutoApiRequest, ProdutoDataView>().ReverseMap()
                     .ForMember(dest => dest.usuario, opt => opt.MapFrom(src => src.usuariovendedorObj.id))
+                    .ForMember(dest => dest.categoria, opt => opt.MapFrom(src => src.categoriaObj.id))
+                    .ForMember(dest => dest.valor, opt => opt.MapFrom(src => double.Parse(src.valorDecimal)))
+                    .ReverseMap()
+                    .ForMember(dest => dest.valorDecimal, opt => opt.MapFrom(src => src.valor.ToString("N2")));
+                cfg.CreateMap<ProdutoModel, ProdutoDataView>().ReverseMap()
+                    .ForMember(dest => dest.usuariovendedor, opt => opt.MapFrom(src => src.usuariovendedorObj.id))
                     .ForMember(dest => dest.categoria, opt => opt.MapFrom(src => src.categoriaObj.id))
                     .ForMember(dest => dest.valor, opt => opt.MapFrom(src => double.Parse(src.valorDecimal)))
                     .ReverseMap()

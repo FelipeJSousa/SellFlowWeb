@@ -6,7 +6,7 @@ async function GetListSituacao() {
     await $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: "https://localhost:5001/api/AnuncioSituacao",
+        url: ApiURL + "/AnuncioSituacao",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             response.dados.forEach(x => _listaSituacao.push(x));

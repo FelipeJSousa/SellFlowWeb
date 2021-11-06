@@ -26,7 +26,7 @@ namespace SellFlowWeb.Models.DataView
         public bool ativo { get; set; }
 
         [DisplayName("Produto")]
-        public ProdutoDataView produtoObj { get; set; }
+        public ProdutoDisplayDataView produtoObj { get; set; }
 
         [DataType(DataType.Currency)]
         [DisplayName("Valor do Anuncio")]

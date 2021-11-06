@@ -7,11 +7,10 @@
     ViewData["Title"] = "Produto";
 }
 
-<form asp-action="Salvar" id="Salvar">
+<form enctype="multipart/form-data" asp-action="Salvar" id="Salvar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">
-    <input asp-for="imagemdestaque" hidden class="visually-hidden" value="">
     <input asp-for="usuariovendedorObj.id" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
 
     <div class="row">
@@ -38,6 +37,10 @@
                     <option selected>Selecione uma Categoria.</option>
                 </select>
             </div>
+        </div>
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição do Produto</label>
+            <input asp-for="imagemArquivo" class="form-control" onblur="ValidarCampo(this, 'Faça o upload da imagem.')">
         </div>
         <div class="row row-cols-auto m-2">
             <span id="tempmessage">@ViewBag.message</span>
