@@ -21,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Tela Inicial</a>
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
@@ -30,7 +30,10 @@
                             @Html.ActionLink("Produtos", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categoria" asp-action="Index">Categorias</a>
+                            <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categorias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
                         </li>
                     </ul>
                     <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>

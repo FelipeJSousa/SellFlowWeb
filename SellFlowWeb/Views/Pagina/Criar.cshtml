@@ -1,0 +1,42 @@
+﻿@model SellFlowWeb.Models.DataView.PaginaDataView
+
+@{
+    ViewData["Title"] = "Pagina";
+}
+
+<form asp-action="Salvar" id="Salvar">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="id" hidden class="visually-hidden" value="0">
+    <input asp-for="ativo" hidden class="visually-hidden" value="true">
+
+    <div class="row">
+        <div class="mb-3">
+            <label asp-for="nome" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomePagina" onblur="ValidarCampo(this,'Informe o nome da página.')">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="caminho" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="caminho" onblur="ValidarCampo(this, 'Informe o caminho da página.')">
+
+    </div>
+    <div class="row row-cols-auto m-2">
+        <span id="tempmessage">@ViewBag.message</span>
+    </div>
+    <div class="row row-cols-auto m-2">
+
+        <div class="col">
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Comun/main.js"></script>
+}
