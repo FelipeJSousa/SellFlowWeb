@@ -15,6 +15,8 @@ namespace ApiClient.Utility
             services.AddScoped<IProdutoClient, ProdutoClient>();
             services.AddScoped<ICategoriaClient, CategoriaClient>();
             services.AddScoped<IAnuncioClient, AnuncioClient>();
+            services.AddScoped<IPaginaClient, PaginaClient>();
+            services.AddScoped<IPermissaoClient, PermissaoClient>();
 
         }
     }
