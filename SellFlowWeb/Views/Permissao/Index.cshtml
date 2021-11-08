@@ -1,7 +1,7 @@
-﻿@model IEnumerable<SellFlowWeb.Models.DataView.PaginaDataView>
+﻿@model IEnumerable<SellFlowWeb.Models.DataView.PermissaoDataView>
 
 @{
-    ViewData["Title"] = "Pagina";
+    ViewData["Title"] = "Permissao";
 }
 
 <div class="row justify-content-end">
@@ -19,9 +19,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.nome)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.caminho)
-                </th>
                 <th> </th>
                 <th> </th>
             </tr>
@@ -37,13 +34,10 @@
                         @Html.DisplayFor(modelItem => item.nome)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.caminho)
+                        @Html.ActionLink("Editar", "Editar", "Permissao", new { id = item.id })
                     </td>
                     <td>
-                        @Html.ActionLink("Editar", "Editar", "Pagina", new { id = item.id })
-                    </td>
-                    <td>
-                        @Html.ActionLink("Excluir", "Excluir", "Pagina", new { id = item.id })
+                        @Html.ActionLink("Excluir", "Excluir", "Permissao", new { id = item.id })
                     </td>
                 </tr>
             }
@@ -69,11 +63,11 @@
     <script>
 
         $(document).ready(async () => {
-            var paginas = @Html.Raw(Json.Serialize(Model))
-                console.log('lista de pagina', paginas)
+            var permissao = @Html.Raw(Json.Serialize(Model))
+                console.log('lista de permissao', permissao)
                 $(".spinner-grow").css('display', 'none')
-            if (paginas.length < 1) {
-                $("#message").text("Não foi possivel obter a lista de pagina.");
+            if (permissao.length < 1) {
+                $("#message").text("Não foi possivel obter a lista de permissao.");
             }
         })
 

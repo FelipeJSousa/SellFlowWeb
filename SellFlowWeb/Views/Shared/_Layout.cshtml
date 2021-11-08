@@ -35,6 +35,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Permissao" asp-action="Index">Permissões</a>
+                        </li>
                     </ul>
                     <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
                     <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i> Sair</a>
