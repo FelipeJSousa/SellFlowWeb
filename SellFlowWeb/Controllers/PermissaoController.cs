@@ -16,10 +16,12 @@ namespace SellFlowWeb.Controllers
     {
 
         private readonly IPermissaoClient _permissaoClient;
+        private readonly IPaginaClient _paginaClient;
 
         public PermissaoController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _permissaoClient = serviceProvider.GetService<IPermissaoClient>();
+            _paginaClient = serviceProvider.GetService<IPaginaClient>();
         }
 
         public async Task<IActionResult> Index()
@@ -29,14 +31,16 @@ namespace SellFlowWeb.Controllers
             return View(permissao);
         }
 
-        public IActionResult Criar()
+        public async Task<IActionResult> Criar()
         {
+            @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
             @ViewBag.message = TempData["message"];
             return VerificarLogin(View());
         }
 
         public async Task<IActionResult> Editar(long id)
         {
+            @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
             @ViewBag.message = TempData["message"];
             var ret = await _permissaoClient.Get(id);
             var _permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PermissaoDataView>>(ret.dados);

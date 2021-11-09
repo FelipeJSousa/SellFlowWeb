@@ -15,10 +15,12 @@ namespace SellFlowWeb.Controllers
     public class PaginaController : BaseController
     {
         private readonly IPaginaClient _paginaClient;
+        private readonly IPermissaoClient _permissaoClient;
 
         public PaginaController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _paginaClient = serviceProvider.GetService<IPaginaClient>();
+            _permissaoClient = serviceProvider.GetService<IPermissaoClient>();
         }
 
         public async Task<IActionResult> Index()
@@ -28,14 +30,16 @@ namespace SellFlowWeb.Controllers
             return View(_pagina);
         }
 
-        public IActionResult Criar()
+        public async Task<IActionResult> Criar()
         {
+            @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
             @ViewBag.message = TempData["message"];
             return VerificarLogin(View());
         }
 
         public async Task<IActionResult> Editar(long id)
         {
+            @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
             @ViewBag.message = TempData["message"];
             var ret = await _paginaClient.Get(id);
             var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PaginaDataView>>(ret.dados);
