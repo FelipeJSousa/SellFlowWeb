@@ -4,7 +4,7 @@
     ViewData["Title"] = "Permissao";
 }
 
-<form asp-action="Salvar" id="Salvar">
+<form asp-action="javascript:SalvarPagina(permissao:@Model.id)" id="Salvar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">

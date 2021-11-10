@@ -26,62 +26,87 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var returnModel = await _permissaoClient.GetAll();
-            var permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PermissaoDataView>>(returnModel?.dados);
-            return View(permissao);
+            var redirect = VerificarLogin();
+            if (redirect is null)
+            {
+                var returnModel = await _permissaoClient.GetAll();
+                var permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PermissaoDataView>>(returnModel?.dados);
+                return View(permissao);
+            }
+            return redirect;
         }
 
         public async Task<IActionResult> Criar()
         {
-            @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
-            @ViewBag.message = TempData["message"];
-            return VerificarLogin(View());
+            var redirect = VerificarLogin();
+            if (redirect is null)
+            {
+                @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
+                @ViewBag.message = TempData["message"];
+                return VerificarLogin(View());
+            }
+            return redirect;
         }
 
         public async Task<IActionResult> Editar(long id)
         {
-            @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
-            @ViewBag.message = TempData["message"];
-            var ret = await _permissaoClient.Get(id);
-            var _permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PermissaoDataView>>(ret.dados);
-            return VerificarLogin(View(_permissao.FirstOrDefault()));
+            var redirect = VerificarLogin();
+            if (redirect is null)
+            {
+                @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
+                @ViewBag.message = TempData["message"];
+                var ret = await _permissaoClient.Get(id);
+                var _permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PermissaoDataView>>(ret.dados);
+                return VerificarLogin(View(_permissao.FirstOrDefault()));
+            }
+            return redirect;
         }
 
         public async Task<IActionResult> Salvar(PermissaoDataView obj)
         {
-            var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
-            var _produto = _mapper.Map<PermissaoApiRequest>(obj);
-
-            ReturnModel<PermissaoModel> _ret = new();
-            _ret = await _permissaoClient.Save(_produto);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Salvar!";
-                if (obj.id > 0)
-                {
-                    return View("Editar", new { id = obj.id });
-                }
-                else
-                {
-                    return View("Criar");
-                }
-            }
+                var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
+                var _produto = _mapper.Map<PermissaoApiRequest>(obj);
 
-            return RedirectToAction("Index");
+                ReturnModel<PermissaoModel> _ret = new();
+                _ret = await _permissaoClient.Save(_produto);
+
+                if (!_ret.status)
+                {
+                    TempData["message"] = "Não foi possível Salvar!";
+                    if (obj.id > 0)
+                    {
+                        return View("Editar", new { id = obj.id });
+                    }
+                    else
+                    {
+                        return View("Criar");
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+            return redirect;
         }
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            ReturnModel<PermissaoModel> _ret = await _permissaoClient.Delete(id);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Excluir!";
+                ReturnModel<PermissaoModel> _ret = await _permissaoClient.Delete(id);
+
+                if (!_ret.status)
+                {
+                    TempData["message"] = "Não foi possível Excluir!";
+                    return RedirectToAction("Index");
+                }
+
                 return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return redirect;
         }
     }
 }

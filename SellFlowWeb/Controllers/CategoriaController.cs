@@ -24,9 +24,14 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var _ret = await _categoriaClient.GetAll();
-            var _categoria = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<CategoriaDataView>>(_ret.dados);
-            return VerificarLogin(View(_categoria));
+            var redirect = VerificarLogin();
+            if (redirect is null)
+            {
+                var _ret = await _categoriaClient.GetAll();
+                var _categoria = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<CategoriaDataView>>(_ret.dados);
+                return VerificarLogin(View(_categoria));
+            }
+            return redirect;
         }
 
         public IActionResult Criar()
@@ -45,39 +50,49 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Salvar(CategoriaDataView obj)
         {
-            var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
-            var _produto = _mapper.Map<CategoriaApiRequest>(obj);
-            
-            ReturnModel<CategoriaModel> _ret = new();
-            _ret = await _categoriaClient.Save(_produto);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Salvar!";
-                if (obj.id > 0)
-                {
-                    return View("Editar", new { id = obj.id });
-                }
-                else
-                {
-                    return View("Criar");
-                }
-            }
-            return RedirectToAction("Index");
+                var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
+                var _produto = _mapper.Map<CategoriaApiRequest>(obj);
+            
+                ReturnModel<CategoriaModel> _ret = new();
+                _ret = await _categoriaClient.Save(_produto);
 
+                if (!_ret.status)
+                {
+                    TempData["message"] = "Não foi possível Salvar!";
+                    if (obj.id > 0)
+                    {
+                        return View("Editar", new { id = obj.id });
+                    }
+                    else
+                    {
+                        return View("Criar");
+                    }
+                }
+                return RedirectToAction("Index");
+
+            }
+            return redirect;
         }
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            ReturnModel<CategoriaModel> _ret = await _categoriaClient.Delete(id);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Excluir!";
+                ReturnModel<CategoriaModel> _ret = await _categoriaClient.Delete(id);
+
+                if (!_ret.status)
+                {
+                    TempData["message"] = "Não foi possível Excluir!";
+                    return RedirectToAction("Index");
+                }
+
                 return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return redirect;
         }
     }
 }
