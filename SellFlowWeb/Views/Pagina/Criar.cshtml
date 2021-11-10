@@ -4,7 +4,7 @@
     ViewData["Title"] = "Pagina";
 }
 
-<form asp-action="Salvar" id="Salvar">
+<form action="javascript:SalvarPermissaoPagina({ pagina: @Model.id })" id="Salvar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">
@@ -28,7 +28,7 @@
                 {
                     var id = $"permissaoId_{item.id}";
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="@id">
+                        <input class="form-check-input checkpermissao" type="checkbox" role="switch" id="@id">
                         <label class="form-check-label" for="@id" data-bs-toggle="tooltip" data-bs-placement="right" title="@item.nome">@item.nome</label>
                     </div>
                 }
@@ -54,4 +54,5 @@
 
 @section Scripts{
     <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/PermissaoPagina/PermissaoPaginaMain.js"></script>
 }
