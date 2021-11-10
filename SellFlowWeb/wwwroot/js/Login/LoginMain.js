@@ -17,7 +17,7 @@ async function Logar(access) {
         contentType: "application/json; charset=utf-8",
         url: WebURL + "/Login/Auth",
         headers: {
-            origin: "https://localhost:4001"
+            origin: WebURL
         },
         dataType: 'json',
         data: JSON.stringify(access),
@@ -49,7 +49,7 @@ async function Validar(email, senha) {
         contentType: "application/json; charset=utf-8",
         url: ApiURL + "/Acesso/Login",
         headers: {
-            origin: "https://localhost:4001"
+            origin: WebURL
         },
         dataType: 'json',
         data: JSON.stringify(obj),

@@ -60,7 +60,7 @@ async function SavePessoa(obj) {
         data: JSON.stringify(obj),
         dataType: "json",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
-        url: "https://localhost:5001/api/Pessoa",
+        url: ApiURL + "/Pessoa",
         success: response => {
             pessoa = response.dados;
         },
