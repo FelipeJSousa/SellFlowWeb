@@ -67,11 +67,9 @@ namespace SellFlowWeb
 
                 cfg.CreateMap<AnuncioSituacaoDataView, AnuncioSituacaoModel>().ReverseMap();
 
-                //cfg.CreateMap<PermissaoDataView, PermissaoModel>().ReverseMap();
-                //cfg.CreateMap<PermissaoApiRequest, PermissaoModel>().ReverseMap();
-
-                //cfg.CreateMap<PermissaoPaginaDataview, PermissaoPaginaModel>().ReverseMap();
-                //cfg.CreateMap<PermissaoPaginaApiRequest, PermissaoPaginaModel>().ReverseMap();
+                cfg.CreateMap<PermissaoDataView, PermissaoModel>().ReverseMap();
+                cfg.CreateMap<PermissaoApiRequest, PermissaoModel>().ReverseMap();
+                cfg.CreateMap<PermissaoApiRequest, PermissaoDataView>().ReverseMap();
 
                 cfg.CreateMap<PaginaDataView, PaginaModel>().ReverseMap();
                 cfg.CreateMap<PaginaApiRequest, PaginaModel>().ReverseMap();

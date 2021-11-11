@@ -1,10 +1,10 @@
-﻿@model SellFlowWeb.Models.DataView.PaginaDataView
+﻿@model SellFlowWeb.Models.DataView.PermissaoDataView
 
 @{
-    ViewData["Title"] = "Pagina";
+    ViewData["Title"] = "Permissao";
 }
 
-<form action="javascript:SalvarPermissaoPagina({ pagina: 0 })" id="Salvar">
+<form action="javascript:SalvarPermissaoPagina({ permissao: 0 })" id="Salvar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">
@@ -12,24 +12,20 @@
     <div class="row">
         <div class="mb-3">
             <label asp-for="nome" class="form-label"></label>
-            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomePagina" onblur="ValidarCampo(this,'Informe o nome da página.')">
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomePermissao" onblur="ValidarCampo(this,'Informe o nome da permissão.')">
         </div>
 
-        <div class="mb-3">
-            <label asp-for="caminho" class="form-label"></label>
-            <input type="text" class="form-control" asp-for="caminho" onblur="ValidarCampo(this, 'Informe o caminho da página.')">
-        </div>
     </div>
     <div class="row px-3 mb-3">
         @{
-            if (ViewBag.permissoes.Count > 0)
+            if (ViewBag.paginas.Count > 0)
             {
-                @foreach (var item in ViewBag.permissoes)
+                @foreach (var item in ViewBag.paginas)
                 {
-                    var id = $"permissaoId_{item.id}";
+                    var id = $"paginaId_{item.id}";
                     <div class="form-check form-switch">
-                        <input class="form-check-input checkpermissao" type="checkbox" role="switch" id="@id">
-                        <label class="form-check-label" for="@id" data-bs-toggle="tooltip" data-bs-placement="right" title="@item.nome">@item.nome</label>
+                        <input class="form-check-input checkpagina" type="checkbox" role="switch" id="@id">
+                        <label class="form-check-label" for="@id" data-bs-toggle="tooltip" data-bs-placement="right" title="@item.caminho">@item.nome</label>
                     </div>
                 }
             }
@@ -55,4 +51,5 @@
 @section Scripts{
     <script src="~/js/Comun/main.js"></script>
     <script src="~/js/PermissaoPagina/PermissaoPaginaMain.js"></script>
+    
 }

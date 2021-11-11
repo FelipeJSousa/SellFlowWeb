@@ -22,13 +22,20 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var obj = await _anuncioClient.GetPublicados();
-            if (obj.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
-                return VerificarLogin(View(anuncioList));
+                var obj = await _anuncioClient.GetPublicados();
+                if (obj.status)
+                {
+                    var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
+                    return View(anuncioList);
+                }
+                return View(new List<AnuncioDataView>());
             }
-            return VerificarLogin(View(new List<AnuncioDataView>()));
+
+            return redirect;
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

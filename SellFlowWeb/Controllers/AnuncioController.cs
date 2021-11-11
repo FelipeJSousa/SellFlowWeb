@@ -52,38 +52,48 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Salvar(AnuncioDataView obj)
         {
-            var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
-            var _produto = _mapper.Map<AnuncioApiRequest>(obj);
-            var idusuario = HttpContext.Session.GetInt32("idusuario").Value;
-            ReturnModel<AnuncioModel> _ret = new();
-            _ret = await _anuncioClient.Save(_produto);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Salvar!";
-                if (obj.id.HasValue && obj.id > 0)
+                var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
+                var _produto = _mapper.Map<AnuncioApiRequest>(obj);
+                var idusuario = HttpContext.Session.GetInt32("idusuario").Value;
+                ReturnModel<AnuncioModel> _ret = new();
+                _ret = await _anuncioClient.Save(_produto);
+
+                if (!_ret.status)
                 {
-                    return View("Editar", new { id = obj.id, usuario = idusuario });
+                    TempData["message"] = "Não foi possível Salvar!";
+                    if (obj.id.HasValue && obj.id > 0)
+                    {
+                        return View("Editar", new { id = obj.id, usuario = idusuario });
+                    }
+                    else
+                    {
+                        return View("Criar");
+                    }
                 }
-                else
-                {
-                    return View("Criar");
-                }
+                return RedirectToAction("Index", new { usuario = idusuario });
             }
-            return RedirectToAction("Index", new { usuario = idusuario });
+            return redirect;
         }
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            ReturnModel<AnuncioModel> _ret = await _anuncioClient.Delete(id);
-
-            if (!_ret.status)
+            var redirect = VerificarLogin();
+            if (redirect is null)
             {
-                TempData["message"] = "Não foi possível Excluir!";
+                ReturnModel<AnuncioModel> _ret = await _anuncioClient.Delete(id);
+
+                if (!_ret.status)
+                {
+                    TempData["message"] = "Não foi possível Excluir!";
+                    return RedirectToAction("Index", new { usuario = HttpContext.Session.GetInt32("idusuario").Value });
+                }
+
                 return RedirectToAction("Index", new { usuario = HttpContext.Session.GetInt32("idusuario").Value });
             }
-
-            return RedirectToAction("Index", new { usuario = HttpContext.Session.GetInt32("idusuario").Value });
+            return redirect;
         }
     }
 }

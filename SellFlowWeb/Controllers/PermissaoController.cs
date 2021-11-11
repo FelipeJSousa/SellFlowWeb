@@ -1,26 +1,27 @@
-﻿using Models;
-using System;
+﻿using ApiClient.Interfaces;
 using AutoMapper;
-using System.Linq;
-using ApiClient.Interfaces;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using SellFlowWeb.Models.DataView;
-using SellFlowWeb.Models.ApiRequest;
 using Microsoft.Extensions.DependencyInjection;
+using Models;
+using SellFlowWeb.Models.ApiRequest;
+using SellFlowWeb.Models.DataView;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SellFlowWeb.Controllers
 {
-    public class PaginaController : BaseController
+    public class PermissaoController : BaseController
     {
-        private readonly IPaginaClient _paginaClient;
-        private readonly IPermissaoClient _permissaoClient;
 
-        public PaginaController(IServiceProvider serviceProvider) : base(serviceProvider)
+        private readonly IPermissaoClient _permissaoClient;
+        private readonly IPaginaClient _paginaClient;
+
+        public PermissaoController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _paginaClient = serviceProvider.GetService<IPaginaClient>();
             _permissaoClient = serviceProvider.GetService<IPermissaoClient>();
+            _paginaClient = serviceProvider.GetService<IPaginaClient>();
         }
 
         public async Task<IActionResult> Index()
@@ -28,9 +29,9 @@ namespace SellFlowWeb.Controllers
             var redirect = VerificarLogin();
             if (redirect is null)
             {
-                var returnModel = await _paginaClient.GetAll();
-                var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PaginaDataView>>(returnModel?.dados);
-                return View(_pagina);
+                var returnModel = await _permissaoClient.GetAll();
+                var permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PermissaoDataView>>(returnModel?.dados);
+                return View(permissao);
             }
             return redirect;
         }
@@ -40,7 +41,7 @@ namespace SellFlowWeb.Controllers
             var redirect = VerificarLogin();
             if (redirect is null)
             {
-                @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
+                @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
                 return VerificarLogin(View());
             }
@@ -52,25 +53,25 @@ namespace SellFlowWeb.Controllers
             var redirect = VerificarLogin();
             if (redirect is null)
             {
-                @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
+                @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
-                var ret = await _paginaClient.Get(id);
-                var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PaginaDataView>>(ret.dados);
-                return VerificarLogin(View(_pagina.FirstOrDefault()));
+                var ret = await _permissaoClient.Get(id);
+                var _permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PermissaoDataView>>(ret.dados);
+                return VerificarLogin(View(_permissao.FirstOrDefault()));
             }
             return redirect;
         }
 
-        public async Task<IActionResult> Salvar(PaginaDataView obj)
+        public async Task<IActionResult> Salvar(PermissaoDataView obj)
         {
             var redirect = VerificarLogin();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
-                var _produto = _mapper.Map<PaginaApiRequest>(obj);
+                var _produto = _mapper.Map<PermissaoApiRequest>(obj);
 
-                ReturnModel<PaginaModel> _ret = new();
-                _ret = await _paginaClient.Save(_produto);
+                ReturnModel<PermissaoModel> _ret = new();
+                _ret = await _permissaoClient.Save(_produto);
 
                 if (!_ret.status)
                 {
@@ -84,7 +85,7 @@ namespace SellFlowWeb.Controllers
                         return View("Criar");
                     }
                 }
-         
+
                 return RedirectToAction("Index");
             }
             return redirect;
@@ -95,7 +96,7 @@ namespace SellFlowWeb.Controllers
             var redirect = VerificarLogin();
             if (redirect is null)
             {
-                ReturnModel<PaginaModel> _ret = await _paginaClient.Delete(id);
+                ReturnModel<PermissaoModel> _ret = await _permissaoClient.Delete(id);
 
                 if (!_ret.status)
                 {
