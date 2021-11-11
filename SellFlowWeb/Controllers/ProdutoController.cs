@@ -24,7 +24,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index(int usuario)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _ret = await _produtoClient.GetAll(usuario);
@@ -37,13 +37,13 @@ namespace SellFlowWeb.Controllers
         public IActionResult Criar()
         {
             @ViewBag.message = TempData["message"];
-            return VerificarLogin(View());
+            return SessionExists(View());
         }
 
         [Route("{controller}/Editar/{usuario}/{id}")]
         public async Task<IActionResult> Editar(long usuario, long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 @ViewBag.message = TempData["message"];
@@ -56,7 +56,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Salvar(ProdutoDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -87,7 +87,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 ReturnModel<ProdutoModel> _ret = await _produtoClient.Delete(id);

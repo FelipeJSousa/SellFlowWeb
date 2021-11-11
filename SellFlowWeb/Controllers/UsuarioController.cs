@@ -25,12 +25,12 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Cadastrar()
         {
-            return VerificarLogin(View());
+            return SessionExists(View());
         }
         
         public async Task<IActionResult> Salvar(PessoaDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -68,7 +68,7 @@ namespace SellFlowWeb.Controllers
         [HttpGet("Perfil")]
         public async Task<IActionResult> Perfil()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if(redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());

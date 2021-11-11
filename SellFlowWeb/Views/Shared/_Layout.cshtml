@@ -23,24 +23,34 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Tela Inicial</a>
                         </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Produtos", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categorias</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Permissao" asp-action="Index">Permissões</a>
-                        </li>
+                        @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value != 2)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Produtos", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categorias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Permissao" asp-action="Index">Permissões</a>
+                            </li>
+                        }
                     </ul>
-                    <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
-                    <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i> Sair</a>
+                    @if(Context.Request.HttpContext.Session.GetInt32("idpermissao").Value == 2)
+                    {
+                        <a asp-action="Index" asp-controller="Login" class="btn btn-outline-light nav-link"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
+                        <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i> Sair</a>
+                    }
                 </div>
             </div>
         </nav>
