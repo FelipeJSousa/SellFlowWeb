@@ -4,7 +4,7 @@
     ViewData["Title"] = "Pagina";
 }
 
-<form action="javascript:SalvarPermissaoPagina({ pagina: @Model.id })" id="Salvar">
+<form action="javascript:SalvarPermissaoPagina({ pagina: 0 })" id="Salvar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="id" hidden class="visually-hidden" value="0">
     <input asp-for="ativo" hidden class="visually-hidden" value="true">
@@ -20,7 +20,7 @@
             <input type="text" class="form-control" asp-for="caminho" onblur="ValidarCampo(this, 'Informe o caminho da página.')">
         </div>
     </div>
-    <div class="row px-3">
+    <div class="row px-3 mb-3">
         @{
             if (ViewBag.permissoes.Count > 0)
             {

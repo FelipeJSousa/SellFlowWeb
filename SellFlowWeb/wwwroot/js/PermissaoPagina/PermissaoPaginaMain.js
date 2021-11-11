@@ -5,19 +5,144 @@
     $('#btnsalvar').append(_spinner)
     $("<span>", { text: "Salvando" }).insertAfter($(".spinner-grow"));
 
-
     await sleep(1000);
 
-
-
-    var permissaoPagina = [];
     if (permissao != null) {
-        $('.checkpagina:checked').each(ele => permissaoPagina.push({idpagina: ele, idPermissao: permissao}))
+        var permissaoObj = {
+            id: $('#id').val(),
+            nome: $('#nome').val()
+        }
+        var resp = await SalvarPermissao(permissaoObj);
+        if (resp.id != undefined) {
+            $('#id').val(resp.id);
+            permissao = resp.id;
+            var permissaoPagina = { permissao: [] };
+            $('.checkpagina:checked').each((i, ele) => permissaoPagina.permissao.push({ pagina: ele.id.split('_')[1], permissao: permissao }))
+            if (permissaoPagina.permissao.length == 0) {
+                document.location.href = '/Permissao/Index';
+            }
+            resp = await PostPermissaoPagina(permissaoPagina);
+            if (resp) {
+                document.location.href = '/Permissao/Index';
+            }
+            else {
+                $('#tempmessage').text("Não foi possivel salvar.")
+                $(".spinner-grow").remove();
+                $('#btnsalvar').text("Salvar");
+            }
+        }
+        else {
+            $('#tempmessage').text("Não foi possivel salvar.")
+            $(".spinner-grow").remove();
+            $('#btnsalvar').text("Salvar");
+        }
     }
-    if (pagina != null) {
-        $('.checkpermissao:checked').each(ele => permissaoPagina.push({ idpagina: pagina, idPermissao: ele})) //get ele id
+    else if (pagina != null) {
+        var paginaObj = {
+            id: $('#id').val(),
+            nome: $('#nome').val(),
+            caminho: $('#caminho').val()
+        }
+        var resp = await SalvarPagina(paginaObj);
+        if (resp.id != undefined) {
+            $('#id').val(resp.id);
+            pagina = resp.id;
+            var permissaoPagina = { pagina: [] };
+            $('.checkpermissao:checked').each((i, ele) => permissaoPagina.pagina.push({ pagina: pagina, permissao: ele.id.split('_')[1] })) //get ele id
+            if (permissaoPagina.pagina.length == 0) {
+                document.location.href = '/Pagina/Index';
+            }
+            resp = await PostPermissaoPagina(permissaoPagina);
+            if (resp) {
+                document.location.href = '/Pagina/Index';
+            }
+            else {
+                $('#tempmessage').text("Não foi possivel salvar.")
+                $(".spinner-grow").remove();
+                $('#btnsalvar').text("Salvar");
+            }
+        }
+        else {
+            $('#tempmessage').text("Não foi possivel salvar.")
+            $(".spinner-grow").remove();
+            $('#btnsalvar').text("Salvar");
+        }
     }
-    if (permissaoPagina != undefined && permissaoPagina.length > 0) {
+    else {
+        $('#tempmessage').text("Não foi possivel salvar.")
+        $(".spinner-grow").remove();
+        $('#btnsalvar').text("Salvar");
+    }
+}
+
+async function SalvarPermissao(obj) {
+    var _error = ""
+    var resp = ""
+    if (obj != undefined) {
+        await $.ajax({
+            type: obj.id > 0 ? "PUT" : "POST",
+            contentType: "application/json; charset=utf-8",
+            url: ApiURL + "/Permissao",
+            headers: {
+                origin: WebURL
+            },
+            dataType: 'json',
+            data: JSON.stringify(obj),
+            success: response => {
+                resp = response.dados;
+            },
+            failure: response => {
+                resp = false;
+                _error = response.erro;
+            }
+        });
+    }
+    else {
+        _error = "Não foi possível salvar a permissão.\n"
+    }
+
+    return await new Promise((resolve, reject) => {
+        resolve(resp);
+        reject(_error);
+    });
+}
+
+async function SalvarPagina(obj) {
+    var _error = ""
+    var resp = ""
+    if (obj != undefined) {
+        await $.ajax({
+            type: obj.id > 0 ? "PUT" : "POST",
+            contentType: "application/json; charset=utf-8",
+            url: ApiURL + "/Pagina",
+            headers: {
+                origin: WebURL
+            },
+            dataType: 'json',
+            data: JSON.stringify(obj),
+            success: response => {
+                resp = response.dados;
+            },
+            failure: response => {
+                resp = false;
+                _error = response.erro;
+            }
+        });
+    }
+    else {
+        _error = "Não foi possível salvar a permissão.\n"
+    }
+
+    return await new Promise((resolve, reject) => {
+        resolve(resp);
+        reject(_error);
+    });
+}
+
+async function PostPermissaoPagina(obj) {
+    var _error = ""
+    var resp = false
+    if (obj != undefined) {
         await $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -26,25 +151,24 @@
                 origin: WebURL
             },
             dataType: 'json',
-            data: JSON.stringify(permissaoPagina),
+            data: JSON.stringify(obj),
             success: response => {
-                $(".spinner-grow").remove();
-                $('#btnSalvarPerfil').text("Salvar");
+                resp = true;
             },
             failure: response => {
+                resp = false;
                 _error = response.erro;
-                $(".spinner-grow").remove();
-                $('#tempmessage').text("Não foi possivel salvar.");
-                $('#btnSalvarPerfil').text("Salvar");
             }
         });
     }
     else {
-        $('#tempmessage').text("Não foi possivel salvar.");
+        _error = "Permissao Pagina incorretos."
     }
-    $(".spinner-grow").remove();
-    $('#btnSalvarPerfil').text("Salvar");
 
+    return await new Promise((resolve, reject) => {
+        resolve(resp);
+        reject(_error);
+    });
 }
 
 async function CarregarPermissaoPagina({ permissao, pagina } = { permissao : null, pagina : null })
@@ -87,7 +211,6 @@ async function GetPermissoes(idPagina) {
         reject(_error);
     });
 }
-
 
 async function GetPaginas(idPermissao) {
     var permissoes = [];
