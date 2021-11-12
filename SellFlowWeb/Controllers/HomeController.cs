@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SellFlowWeb.Models;
 using System.Diagnostics;
 using System;
 using ApiClient.Interfaces;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using SellFlowWeb.Models.DataView;
 using System.Collections.Generic;
+using Models;
 
 namespace SellFlowWeb.Controllers
 {
@@ -22,20 +22,19 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var redirect = VerificarLogin();
-            if (redirect is null)
+            var redirect = SessionExists();
+            if (redirect is not null)
             {
-                var obj = await _anuncioClient.GetPublicados();
-                if (obj.status)
-                {
-                    var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
-                    return View(anuncioList);
-                }
-                return View(new List<AnuncioDataView>());
+                HttpContext.Session.SetInt32("idpermissao", HttpContext.Session.GetInt32("idpermissao") ?? 2);
             }
 
-            return redirect;
-
+            var obj = await _anuncioClient.GetPublicados();
+            if (obj.status)
+            {
+                var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
+                return View(anuncioList);
+            }
+            return View(new List<AnuncioDataView>());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -83,9 +83,7 @@ async function SalvarPermissao(obj) {
             type: obj.id > 0 ? "PUT" : "POST",
             contentType: "application/json; charset=utf-8",
             url: ApiURL + "/Permissao",
-            headers: {
-                origin: WebURL
-            },
+            headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
             dataType: 'json',
             data: JSON.stringify(obj),
             success: response => {
@@ -115,9 +113,7 @@ async function SalvarPagina(obj) {
             type: obj.id > 0 ? "PUT" : "POST",
             contentType: "application/json; charset=utf-8",
             url: ApiURL + "/Pagina",
-            headers: {
-                origin: WebURL
-            },
+            headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
             dataType: 'json',
             data: JSON.stringify(obj),
             success: response => {
@@ -147,9 +143,7 @@ async function PostPermissaoPagina(obj) {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: ApiURL + "/PermissaoPagina",
-            headers: {
-                origin: WebURL
-            },
+            headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
             dataType: 'json',
             data: JSON.stringify(obj),
             success: response => {
@@ -194,9 +188,7 @@ async function GetPermissoes(idPagina) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: ApiURL + "/PermissaoPagina/Pagina/" + idPagina,
-        headers: {
-            origin: WebURL
-        },
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             paginas = response.dados;
         },
@@ -219,9 +211,7 @@ async function GetPaginas(idPermissao) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: ApiURL + "/PermissaoPagina/Permissao/" + idPermissao,
-        headers: {
-            origin: WebURL
-        },
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
         success: response => {
             permissoes = response.dados;
         },

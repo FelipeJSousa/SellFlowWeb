@@ -28,15 +28,23 @@ namespace SellFlowWeb.Controllers
         {
             var _ret = await _anuncioClient.GetAll(usuario);
             var _anuncios = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(_ret.dados);
-            return VerificarLogin(View(_anuncios));
+            return SessionExists(View(_anuncios));
         }
 
         public IActionResult Criar()
         {
+            if(!ValidarPermissoes("/Anuncio/Criar" , HttpContext.Session.GetInt32("idpermissao") ?? 2))
+            {
+                if (!string.IsNullOrWhiteSpace(Request.Headers["Referer"].ToString()))
+                { 
+                    return Redirect(Request.Headers["Referer"].ToString());
+                }
+                return Redirect(Request.Host.ToString());
+            }
             @ViewBag.message = TempData["message"];
             @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDisplayDataView>>(
                                             _produtoClient.GetAll(HttpContext.Session.GetInt32("idusuario").Value).GetAwaiter().GetResult().dados);
-            return VerificarLogin(View());
+            return SessionExists(View());
         }
 
         [Route("{controller}/Editar/{usuario}/{id}")]
@@ -47,12 +55,12 @@ namespace SellFlowWeb.Controllers
                                             _produtoClient.GetAll(HttpContext.Session.GetInt32("idusuario").Value).GetAwaiter().GetResult().dados);
             var ret = await _anuncioClient.Get(id, usuario);
             var _anuncios = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<AnuncioDataView>>(ret.dados);
-            return VerificarLogin(View(_anuncios.FirstOrDefault()));
+            return SessionExists(View(_anuncios.FirstOrDefault()));
         }
 
         public async Task<IActionResult> Salvar(AnuncioDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -80,7 +88,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 ReturnModel<AnuncioModel> _ret = await _anuncioClient.Delete(id);

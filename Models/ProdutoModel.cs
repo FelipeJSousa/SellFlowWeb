@@ -9,6 +9,7 @@ namespace Models
         public string descricao { get; set; }
 
         public string imagemdestaque { get; set; }
+
         public IFormFile imagemArquivo { get; set; }
 
         public bool ativo { get; set; }

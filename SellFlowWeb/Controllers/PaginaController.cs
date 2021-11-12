@@ -25,45 +25,45 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var returnModel = await _paginaClient.GetAll();
                 var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PaginaDataView>>(returnModel?.dados);
-                return View(_pagina);
+                return View(_pagina.OrderBy(x => x.caminho).ThenBy(x => x.nome));
             }
             return redirect;
         }
 
         public async Task<IActionResult> Criar()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
-                return VerificarLogin(View());
+                return SessionExists(View());
             }
             return redirect;
         }
 
         public async Task<IActionResult> Editar(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 @ViewBag.permissoes = (await _permissaoClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
                 var ret = await _paginaClient.Get(id);
                 var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PaginaDataView>>(ret.dados);
-                return VerificarLogin(View(_pagina.FirstOrDefault()));
+                return SessionExists(View(_pagina.FirstOrDefault()));
             }
             return redirect;
         }
 
         public async Task<IActionResult> Salvar(PaginaDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -92,7 +92,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 ReturnModel<PaginaModel> _ret = await _paginaClient.Delete(id);

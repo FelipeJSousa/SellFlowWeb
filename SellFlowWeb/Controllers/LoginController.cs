@@ -33,7 +33,8 @@ namespace SellFlowWeb.Controllers
                 if (_ret != null && _ret.status && _ret.dados.Count > 0)
                 {
                     var _pessoa = _ret.dados.FirstOrDefault();
-                    HttpContext.Session.SetInt32("idusuario", ((int)_pessoa.usuarioObj.id));
+                    HttpContext.Session.SetInt32("idusuario", (int)_pessoa.usuarioObj.id);
+                    HttpContext.Session.SetInt32("idpermissao", (int)(_pessoa.usuarioObj.permissao.HasValue ? _pessoa.usuarioObj.permissao : 2));
                     HttpContext.Session.SetString("email", _pessoa.usuarioObj.email);
                     HttpContext.Session.SetString("nome", _pessoa.nome);
                     HttpContext.Session.SetString("sobrenome", _pessoa.sobrenome);

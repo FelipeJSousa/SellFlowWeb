@@ -110,7 +110,7 @@ function GeraTabela(list, tagHeader, tagData = null, actionEdit = true, actionDe
                         $(`#tr${y}`).append(_td);
                         let _a = $("<a>", { text: 'Editar' });
                         _a.attr('id', `linktoeditar${item['id']}`);
-                        _a.attr('href', `https://localhost:4001/Produto/Editar/${item['id']}`);
+                        _a.attr('href', `${WebURL}/Produto/Editar/${item['id']}`);
                         $(`#editar${item['id']}`).append(_a);
                     }
                     if (actionDelete) {
@@ -119,7 +119,7 @@ function GeraTabela(list, tagHeader, tagData = null, actionEdit = true, actionDe
                         $(`#tr${y}`).append(_td);
                         let _a = $("<a>", { text: 'Excluir' });
                         _a.attr('id', `linktoeditar${item['id']}`);
-                        _a.attr('href', `https://localhost:4001/Produto/Excluir/${item['id']}`);
+                        _a.attr('href', `${WebURL}/Produto/Excluir/${item['id']}`);
                         $(`#excluir${item['id']}`).append(_a);
                     }
                 }

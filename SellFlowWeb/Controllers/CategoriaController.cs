@@ -24,12 +24,12 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _ret = await _categoriaClient.GetAll();
                 var _categoria = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<CategoriaDataView>>(_ret.dados);
-                return VerificarLogin(View(_categoria));
+                return SessionExists(View(_categoria));
             }
             return redirect;
         }
@@ -37,7 +37,7 @@ namespace SellFlowWeb.Controllers
         public IActionResult Criar()
         {
             @ViewBag.message = TempData["message"];
-            return VerificarLogin(View());
+            return SessionExists(View());
         }
 
         public async Task<IActionResult> Editar(long id)
@@ -45,12 +45,12 @@ namespace SellFlowWeb.Controllers
             @ViewBag.message = TempData["message"];
             var ret = await _categoriaClient.Get(id);
             var _categoria = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<CategoriaDataView>>(ret.dados);
-            return VerificarLogin(View(_categoria.FirstOrDefault()));
+            return SessionExists(View(_categoria.FirstOrDefault()));
         }
 
         public async Task<IActionResult> Salvar(CategoriaDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -79,7 +79,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 ReturnModel<CategoriaModel> _ret = await _categoriaClient.Delete(id);

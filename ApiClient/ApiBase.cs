@@ -20,18 +20,10 @@ namespace ApiClient
 
         public async Task<ReturnModel<T>> GetAsync<T>(Uri requestUrl)
         {
-            try
-            {
-                var response = await _httpClient.GetAsync(requestUrl);
+            var response = await _httpClient.GetAsync(requestUrl);
 
-                var data = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<ReturnModel<T>>(data);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            var data = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ReturnModel<T>>(data) ?? default;
         }
 
         public async Task<ReturnModel<T1>> PostAsync<T1, T2>(Uri requestUrl, T2 obj = default, HttpContent content = null)

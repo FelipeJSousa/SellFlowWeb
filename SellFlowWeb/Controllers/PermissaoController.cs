@@ -26,7 +26,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var returnModel = await _permissaoClient.GetAll();
@@ -38,33 +38,33 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> Criar()
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
-                return VerificarLogin(View());
+                return SessionExists(View());
             }
             return redirect;
         }
 
         public async Task<IActionResult> Editar(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 @ViewBag.paginas = (await _paginaClient.GetAll())?.dados;
                 @ViewBag.message = TempData["message"];
                 var ret = await _permissaoClient.Get(id);
                 var _permissao = new Mapper(AutoMapperConfig.RegisterMappings()).Map<IEnumerable<PermissaoDataView>>(ret.dados);
-                return VerificarLogin(View(_permissao.FirstOrDefault()));
+                return SessionExists(View(_permissao.FirstOrDefault()));
             }
             return redirect;
         }
 
         public async Task<IActionResult> Salvar(PermissaoDataView obj)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 var _mapper = new Mapper(AutoMapperConfig.RegisterMappings());
@@ -93,7 +93,7 @@ namespace SellFlowWeb.Controllers
 
         public async Task<IActionResult> ExcluirAsync(long id)
         {
-            var redirect = VerificarLogin();
+            var redirect = SessionExists();
             if (redirect is null)
             {
                 ReturnModel<PermissaoModel> _ret = await _permissaoClient.Delete(id);
