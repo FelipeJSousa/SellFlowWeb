@@ -33,9 +33,13 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Criar()
         {
-            if(ValidarPermissoes("/Anuncio/Criar" , HttpContext.Session.GetInt32("idpermissao").Value))
+            if(!ValidarPermissoes("/Anuncio/Criar" , HttpContext.Session.GetInt32("idpermissao") ?? 2))
             {
-                return Redirect(Request.Headers["Referer"].ToString());
+                if (!string.IsNullOrWhiteSpace(Request.Headers["Referer"].ToString()))
+                { 
+                    return Redirect(Request.Headers["Referer"].ToString());
+                }
+                return Redirect(Request.Host.ToString());
             }
             @ViewBag.message = TempData["message"];
             @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDisplayDataView>>(

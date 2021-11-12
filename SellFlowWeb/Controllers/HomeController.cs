@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SellFlowWeb.Models;
 using System.Diagnostics;
 using System;
 using ApiClient.Interfaces;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using SellFlowWeb.Models.DataView;
 using System.Collections.Generic;
+using Models;
 
 namespace SellFlowWeb.Controllers
 {

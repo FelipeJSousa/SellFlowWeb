@@ -30,7 +30,7 @@ namespace SellFlowWeb.Controllers
             {
                 var returnModel = await _paginaClient.GetAll();
                 var _pagina = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<PaginaDataView>>(returnModel?.dados);
-                return View(_pagina);
+                return View(_pagina.OrderBy(x => x.caminho).ThenBy(x => x.nome));
             }
             return redirect;
         }

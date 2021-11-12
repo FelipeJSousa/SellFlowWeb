@@ -25,7 +25,7 @@ namespace SellFlowWeb.Controllers
 
         public IActionResult Cadastrar()
         {
-            return SessionExists(View());
+            return View();
         }
         
         public async Task<IActionResult> Salvar(PessoaDataView obj)

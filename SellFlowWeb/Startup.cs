@@ -21,8 +21,6 @@ namespace SellFlowWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(15);
@@ -38,6 +36,10 @@ namespace SellFlowWeb
             services.AddControllersWithViews()
                     .AddSessionStateTempDataProvider();
             services.AddConfigurationIoC(Configuration);
+
+
+            services.AddScoped<PermissionsMiddleware>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +57,7 @@ namespace SellFlowWeb
             }
 
             app.UseCookiePolicy();
+
             app.UseSession();
 
             app.UseCors(x => x
@@ -63,13 +66,13 @@ namespace SellFlowWeb
                 .SetIsOriginAllowed(origin => true)
                 .AllowCredentials());
 
-
             //app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UsePermissionsMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
@@ -77,6 +80,7 @@ namespace SellFlowWeb
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

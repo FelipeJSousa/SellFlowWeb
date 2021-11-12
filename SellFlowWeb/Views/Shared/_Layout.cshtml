@@ -1,75 +1,60 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SellFlowWeb</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SellFlowWeb</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Tela Inicial</a>
-                        </li>
-                        @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value != 2)
-                        {
-                            <li class="nav-item">
-                                @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
-                            </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("Produtos", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categorias</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Permissao" asp-action="Index">Permissões</a>
-                            </li>
-                        }
-                    </ul>
-                    @if(Context.Request.HttpContext.Session.GetInt32("idpermissao").Value == 2)
-                    {
-                        <a asp-action="Index" asp-controller="Login" class="btn btn-outline-light nav-link"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
-                        <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i> Sair</a>
-                    }
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+@{
+    Layout = "~/Views/Shared/_Imports.cshtml";
+}
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            &copy; 2021 - SellFlowWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SellFlowWeb</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Tela Inicial</a>
+                    </li>
+                    @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value != 2)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Produtos", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categorias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Pagina" asp-action="Index">Paginas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Permissao" asp-action="Index">Permissões</a>
+                    </li>
+                </ul>
+                @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value == 2)
+                {
+                    <a asp-action="Index" asp-controller="Login" class="btn btn-outline-light nav-link"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
+                }
+                else
+                {
+                    <a asp-action="Perfil" asp-controller="Usuario" class="btn btn-outline-light nav-link"><i class="bi bi-person"></i> @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
+                    <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i> Sair</a>
+                }
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+@section MainScripts{ 
+
     @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+}
