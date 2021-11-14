@@ -7,20 +7,71 @@
     ViewData["Title"] = "Tela Inicial";
 }
 
-<div class="text-center m-2">
+<div class="row text-center m-2">
     <h3>Bem Vindo @HttpContextAccessor.HttpContext.Session.GetString("nome") @HttpContextAccessor.HttpContext.Session.GetString("sobrenome")</h3>
+</div>
+
+<div class="row m-2 gx-2">
+    <div class="form-floating col">
+        <input type="text" id="search" value="" class="form-control" />
+        <label for="search">Busca</label>
+    </div>
+    <div class="form-floating col-4">
+        <select class="form-select" id="categoria">
+            <option value="0" selected>Tudo</option>
+
+        </select>
+        <label for="categoria">categoria</label>
+    </div>
+    <span class="spinner"></span>
+    <span class="spinner"></span>
+    <span class="spinner"></span>
 </div>
 
 @if (Model.Any())
 {
     <div class="m-5">
-        <h3>Anuncios</h3>
+        <div class="row">
+            <h3>Anuncios</h3>
+        </div>
         <hr/>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="anunciosGrid">
             @foreach (var item in Model)
             {
                 @await Html.PartialAsync("_AnuncioCard", item)
             }
         </div>
     </div>
+}
+
+@section Scripts{
+
+    <script src="~/js/Home/HomeMain.js"></script>
+    <script>
+
+        $(document).ready(() => {
+            $("#search").focus();
+            preencherCategoria();
+        })
+        $("#search").on('keyup', async () => {
+            await Search($("#search").val());
+        });
+        $('#categoria').change(async () => {
+            await Search($("#search").val())
+        });
+
+        async function preencherCategoria() {
+            await GetListCategoria().then(response => {
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#categoria").append(option);
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        };
+
+    </script>    
+
 }
