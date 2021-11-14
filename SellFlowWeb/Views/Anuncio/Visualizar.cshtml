@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Models
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+@model SellFlowWeb.Models.DataView.AnuncioDataView
+
+@{
+    ViewData["Title"] = "Anuncio";
+}
+
+@{
+    if (!string.IsNullOrWhiteSpace(Model.produtoObj.imagemdestaque))
+    {
+        var src = BaseUrl.Api + "Imagens/Produto/" + Model.id;
+        <div class="row m-2">
+            <img src="@Model.produtoObj.imagemdestaque" class="rounded-3 mx-auto d-block border-bottom">
+        </div>
+    }
+}
+<div class="shadow p-4 mb-3 bg-body rounded">
+
+    <div class="row">
+        <div class="col ps-4">
+            <h2 class="">@Model.nome</h2>
+
+            <h3 class="">@Model.produtoObj.nome</h3>
+
+            <h6 class="">Vendedor: @Model.vendedor</h6>
+        </div>
+
+        <div class="col-4 pt-3">
+            @if (double.Parse(Model.percentPromocao.Replace("%", "")) > 0)
+            {
+                <span class="badge rounded-pill bg-success mx-2 col-6">Desconto @Model.percentPromocao</span>
+            }
+            @if (double.Parse(Model.percentPromocao.Replace("%", "")) > 0)
+            {
+                <h5 class="card-text text-success">R$ @Model.valorDecimal - <s class="text-secondary">R$ @Model.produtoObj.valorDecimal</s></h5>
+            }
+            else
+            {
+                <h5 class="card-text">R$ @Model.valorDecimal</h5>
+            }
+        </div>
+    </div>
+
+    <div class="row m-2 shadow p-2">
+        <b>Descrição</b>
+        <p class="">@Model.descricao</p>
+    </div>
+
+    @if ((DateTime.Now.Date - Model.dataCriacao.Date).TotalDays > 0)
+    {
+        var totaldays = (DateTime.Now.Date - Model.dataCriacao.Date).TotalDays;
+        <small class="text-muted">Postado a @totaldays dias.</small>
+    }
+    else
+    {
+        var totalminutes = ((int)(DateTime.Now - Model.dataCriacao).TotalMinutes);
+        <small class="text-muted">Postado a @totalminutes minutos.</small>
+    }
+</div>
+
+<div class="col">
+    @Html.ActionLink("Voltar", "Index", "Home", null, new { @class = "btn btn-outline-secondary" })
+</div>
+
+
+@section Scripts{
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
+        });
+
+    </script>
+}

@@ -23,6 +23,7 @@
             }
             <h6 class="card-text">@Model.produtoObj.nome</h6>
             <p class="card-text">Vendedor - @Model.vendedor</p>
+            @Html.ActionLink("Visualizar", "Visualizar", "Anuncio", new { id = Model.id}, new { @class = "btn btn-primary" })
         </div>
         <div class="card-footer">
             @if ((DateTime.Now.Date - Model.dataCriacao.Date).TotalDays > 0)

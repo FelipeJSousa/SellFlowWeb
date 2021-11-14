@@ -17,7 +17,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Tela Inicial</a>
                     </li>
-                    @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value != 2)
+                    @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").HasValue && Context.Request.HttpContext.Session.GetInt32("idpermissao").Value != 2)
                     {
                         <li class="nav-item">
                             @Html.ActionLink("Anuncios", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "nav-link text-dark" })
@@ -36,7 +36,7 @@
                     </li>
                     }
                 </ul>
-                @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").Value == 2)
+                @if (Context.Request.HttpContext.Session.GetInt32("idpermissao").HasValue && Context.Request.HttpContext.Session.GetInt32("idpermissao").Value == 2)
                 {
                     <a asp-action="Index" asp-controller="Login" class="btn btn-outline-light nav-link"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
                 }

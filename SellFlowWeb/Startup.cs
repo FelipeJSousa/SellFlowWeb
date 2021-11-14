@@ -66,7 +66,7 @@ namespace SellFlowWeb
                 .SetIsOriginAllowed(origin => true)
                 .AllowCredentials());
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

@@ -31,16 +31,17 @@ namespace SellFlowWeb.Controllers
             return SessionExists(View(_anuncios));
         }
 
+        [Route("{controller}/Visualizar/{id}")]
+        public async Task<IActionResult> Visualizar(long id)
+        {
+            var _ret = await _anuncioClient.Get(id);
+            var anucio = new Mapper(AutoMapperConfig.RegisterMappings()).Map<AnuncioDataView>(_ret.dados.FirstOrDefault());
+
+            return View(anucio);
+        }
+
         public IActionResult Criar()
         {
-            if(!ValidarPermissoes("/Anuncio/Criar" , HttpContext.Session.GetInt32("idpermissao") ?? 2))
-            {
-                if (!string.IsNullOrWhiteSpace(Request.Headers["Referer"].ToString()))
-                { 
-                    return Redirect(Request.Headers["Referer"].ToString());
-                }
-                return Redirect(Request.Host.ToString());
-            }
             @ViewBag.message = TempData["message"];
             @ViewBag.produtos = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<ProdutoDisplayDataView>>(
                                             _produtoClient.GetAll(HttpContext.Session.GetInt32("idusuario").Value).GetAwaiter().GetResult().dados);

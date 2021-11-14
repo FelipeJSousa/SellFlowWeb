@@ -1,7 +1,7 @@
 ﻿
 async function Search(text) {
     var categoria = $('#categoria').val() != 0 ? $('#categoria').val() : null;
-    if (text.length > 2 && $('#search').val().replaceAll(' ', '')) {
+    if (text.length > 1 && $('#search').val().replaceAll(' ', '')) {
 
         var _spinner = $("<span>").addClass("spinner-grow spinner-grow-sm me-1")
         $('.spinner').append(_spinner)
@@ -87,6 +87,12 @@ function FillCards(obj) {
         vendedor.text(`Vendedor - ${item.vendedor}`)
 
         body.append(vendedor);
+
+        var btnVisualizar = $("<a>").addClass("btn btn-primary");
+        btnVisualizar.text(`Visualizar`);
+        btnVisualizar.attr('href', `${WebURL}/Auncio/Visualizar/${item.id}`)
+
+        body.append(btnVisualizar);
 
         content.append(body);
 
