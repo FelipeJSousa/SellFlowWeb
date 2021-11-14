@@ -1,10 +1,11 @@
 ﻿
 async function Search(text) {
+    var categoria = $('#categoria').val() != 0 ? $('#categoria').val() : null;
     if (text.length > 2 && $('#search').val().replaceAll(' ', '')) {
 
         var _spinner = $("<span>").addClass("spinner-grow spinner-grow-sm me-1")
         $('.spinner').append(_spinner)
-        var anuncios = await GetAnuncio(text);
+        var anuncios = await GetAnuncio(text, categoria);
         $('.spinner').empty();
 
         $('#anunciosGrid').empty();
@@ -13,7 +14,12 @@ async function Search(text) {
     else if (!$('#search').val()) {
         var _spinner = $("<span>").addClass("spinner-grow spinner-grow-sm me-1")
         $('.spinner').append(_spinner)
-        var anuncios = await GetAnuncioAll();
+        if (categoria == null) {
+            var anuncios = await GetAnuncioAll();
+        }
+        else {
+            var anuncios = await GetAnuncio(null, categoria);
+        }
         $('.spinner').empty();
 
         $('#anunciosGrid').empty();
@@ -148,7 +154,8 @@ async function GetAnuncioAll(idSituacao = 2) {
 async function GetAnuncio(text = null, categoria = null) {
     var anuncios = [];
     var _error = "";
-    var params = text != null ? `busca=${text}&` : "" + categoria != null ? `categoria=${categoria}` : "";
+    var params = text != null ? `busca=${text}&` : "";
+        params += categoria != null ? `categoria=${categoria}` : "";
     if (text != null || categoria != null) {
         await $.ajax({
             type: "GET",
@@ -173,4 +180,30 @@ async function GetAnuncio(text = null, categoria = null) {
         reject(_error);
     });
 
+}
+
+
+async function GetListCategoria() {
+    let _listaCategoria = [];
+    let _error = '';
+
+    await $.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        data: "{}",
+        dataType: "json",
+        headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
+        url: ApiURL + "/Categoria",
+        success: response => {
+            response.dados.forEach(x => _listaCategoria.push(x));
+        },
+        failure: (response) => {
+            _error = response;
+        }
+    });
+
+    return await new Promise((resolve, reject) => {
+        resolve(_listaCategoria);
+        reject(_error);
+    });
 }

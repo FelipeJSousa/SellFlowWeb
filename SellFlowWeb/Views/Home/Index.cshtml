@@ -11,14 +11,21 @@
     <h3>Bem Vindo @HttpContextAccessor.HttpContext.Session.GetString("nome") @HttpContextAccessor.HttpContext.Session.GetString("sobrenome")</h3>
 </div>
 
-<div class="row m-2">
-    <div class="form-floating">
+<div class="row m-2 gx-2">
+    <div class="form-floating col">
         <input type="text" id="search" value="" class="form-control" />
         <label for="search">Busca</label>
-        <span class="spinner"></span>
-        <span class="spinner"></span>
-        <span class="spinner"></span>
     </div>
+    <div class="form-floating col-4">
+        <select class="form-select" id="categoria">
+            <option value="0" selected>Tudo</option>
+
+        </select>
+        <label for="categoria">categoria</label>
+    </div>
+    <span class="spinner"></span>
+    <span class="spinner"></span>
+    <span class="spinner"></span>
 </div>
 
 @if (Model.Any())
@@ -45,10 +52,25 @@
 
         $(document).ready(() => {
             $("#search").focus();
+            preencherCategoria();
         })
         $("#search").on('keyup', async () => {
             await Search($("#search").val());
         });
+        $('#categoria').change(async () => {
+            await Search($("#search").val())
+        });
+
+        async function preencherCategoria() {
+            await GetListCategoria().then(response => {
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#categoria").append(option);
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        };
 
     </script>    
 
