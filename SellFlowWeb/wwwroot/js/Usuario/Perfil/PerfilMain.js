@@ -85,7 +85,7 @@ async function SaveUsuario(obj) {
         data: JSON.stringify(obj),
         dataType: "json",
         headers: { Authorization: 'Bearer ' + sessionStorage.getItem('token') },
-        url: ApiURL + 'Usuario',
+        url: ApiURL + '/Usuario',
         success: response => {
             pessoa = response.dados;
         },

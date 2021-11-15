@@ -19,7 +19,7 @@ namespace ApiClient.Utility
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            List<string> exceptions = new List<string>() { "/Login/Auth", "/Home/Index", "/Login/Logout"} ;
+            List<string> exceptions = new List<string>() { "/Login/Auth", "/Home/Index", "/Login/Logout", "/Usuario/Cadastrar"} ;
             var splittedPath = context.Request.Path.ToString().Split("/");
             var path = "/" + splittedPath[1]; 
             if(splittedPath.Length > 2)
