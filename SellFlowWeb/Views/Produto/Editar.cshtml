@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@using Models
+@model SellFlowWeb.Models.DataView.ProdutoDataView
+@{
+    ViewData["Title"] = "Produto";
+}
+
+<form enctype="multipart/form-data" asp-action="Salvar" id="Salvar">
+    @{
+        if (!string.IsNullOrWhiteSpace(Model.imagemdestaque))
+        {
+            var src = BaseUrl.Api + "Imagens/Produto/" + Model.id;
+            <div class="row">
+                <img src="@Model.imagemdestaque" class="rounded mx-auto d-block">
+            </div>
+        }
+    }
+<div class="row">
+    <input asp-for="id" hidden class="visually-hidden">
+    <input asp-for="ativo" hidden class="visually-hidden">
+    <input asp-for="imagemArquivo" hidden class="visually-hidden">
+    <input asp-for="usuariovendedorObj.id" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
+
+    <div class="mb-3">
+        <label asp-for="nome" class="control-label"></label>
+        <input asp-for="nome" class="form-control" onblur="ValidarCampo(this,'Informe o nome do produto.')" />
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="descricao" class="form-label"></label>
+        <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição do produto.')"></textarea>
+    </div>
+
+    <div class="row  my-3">
+        <div class="form-group col-3 me-2">
+            <label for="valorDecimal" class="form-label">Valor do Produto</label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+                <input type="text" class="form-control" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do produto.')">
+            </div>
+        </div>
+        <div class="form-group col">
+            <label asp-for="categoriaObj" class="form-label"></label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="categoriaObj.id" onclick="ValidarCampo(this, 'Selecione uma categoria para o produto.')" onblur="ValidarCampo(this, 'Selecione uma categoria para o produto.')">
+                <option selected>Selecione uma Categoria.</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="ImagemArquivo" class="form-label">Alterar Imagem de Destaque</label>
+        <input asp-for="imagemArquivo" class="form-control" onblur="ValidarCampo(this, 'Faça o upload da imagem.')">
+    </div>
+
+</div>
+
+    <div class="row row-cols-auto">
+
+        <span>@ViewBag.message</span>
+        <div class="col">
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+        </div>
+
+        <div class="col">
+            @Html.ActionLink("Voltar", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
+            await preencherCategoria();
+
+           console.log('produtoModel',produtoModel);
+
+        });
+
+        const produtoModel = @Html.Raw(Json.Serialize(Model));
+
+
+        async function preencherCategoria () {
+            await GetListCategoria().then(response => {
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#categoriaObj_id").append(option);
+                    $('#categoriaObj_id').val(@Model.categoriaObj.id)
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        }
+    </script>
+}

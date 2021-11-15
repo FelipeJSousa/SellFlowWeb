@@ -1,8 +1,7 @@
-using System;
 
-namespace SellFlowWeb.Models
+namespace Models
 {
-    public class ErrorViewModel
+    public class AcessoNegadoViewModel
     {
         public string RequestId { get; set; }
 

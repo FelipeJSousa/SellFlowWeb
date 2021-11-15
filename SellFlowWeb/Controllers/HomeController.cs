@@ -1,31 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SellFlowWeb.Models;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
+using System;
+using ApiClient.Interfaces;
 using System.Threading.Tasks;
+using AutoMapper;
+using SellFlowWeb.Models.DataView;
+using System.Collections.Generic;
+using Models;
 
 namespace SellFlowWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IAnuncioClient _anuncioClient;
+        public HomeController(IServiceProvider serviceProvider) : base(serviceProvider) 
         {
-            _logger = logger;
+            _anuncioClient = serviceProvider.GetService<IAnuncioClient>();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var redirect = SessionExists();
+            if (redirect is not null)
+            {
+                HttpContext.Session.SetInt32("idpermissao", HttpContext.Session.GetInt32("idpermissao") ?? 2);
+            }
 
-        public IActionResult Privacy()
-        {
-            return View();
+            var obj = await _anuncioClient.GetPublicados();
+            if (obj.status)
+            {
+                var anuncioList = new Mapper(AutoMapperConfig.RegisterMappings()).Map<List<AnuncioDataView>>(obj.dados);
+                return View(anuncioList);
+            }
+            return View(new List<AnuncioDataView>());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

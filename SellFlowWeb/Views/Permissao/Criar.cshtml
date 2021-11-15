@@ -1,0 +1,55 @@
+﻿@model SellFlowWeb.Models.DataView.PermissaoDataView
+
+@{
+    ViewData["Title"] = "Permissao";
+}
+
+<form action="javascript:SalvarPermissaoPagina({ permissao: 0 })" id="Salvar">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="id" hidden class="visually-hidden" value="0">
+    <input asp-for="ativo" hidden class="visually-hidden" value="true">
+
+    <div class="row">
+        <div class="mb-3">
+            <label asp-for="nome" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomePermissao" onblur="ValidarCampo(this,'Informe o nome da permissão.')">
+        </div>
+
+    </div>
+    <div class="row px-3 mb-3">
+        @{
+            if (ViewBag.paginas.Count > 0)
+            {
+                @foreach (var item in ViewBag.paginas)
+                {
+                    var id = $"paginaId_{item.id}";
+                    <div class="form-check form-switch">
+                        <input class="form-check-input checkpagina" type="checkbox" role="switch" id="@id">
+                        <label class="form-check-label" for="@id" data-bs-toggle="tooltip" data-bs-placement="right" title="@item.caminho">@item.nome</label>
+                    </div>
+                }
+            }
+        }
+    </div>
+    <div class="row row-cols-auto m-2">
+        <span id="tempmessage">@ViewBag.message</span>
+    </div>
+    <div class="row row-cols-auto m-2">
+
+        <div class="col">
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/PermissaoPagina/PermissaoPaginaMain.js"></script>
+    
+}

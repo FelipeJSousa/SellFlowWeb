@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model SellFlowWeb.Models.DataView.PessoaDataView
+
+@{
+    ViewData["Title"] = "Editar";
+}
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="Salvar" id="Salvar">
+            <input asp-for="id" value="0"hidden class="visually-hidden">
+            <input asp-for="ativo" value="true" hidden class="visually-hidden">
+            <input asp-for="usuarioObj.id" value="0" hidden class="visually-hidden">
+            <div class="form-group m-3">
+                <label asp-for="nome" class="control-label"></label>
+                <input asp-for="nome" class="form-control" onblur="ValidarCampo(this,'Informe o nome.')" />
+            </div>
+            <div class="form-group m-3">
+                <label asp-for="sobrenome" class="control-label"></label>
+                <input asp-for="sobrenome" class="form-control" onblur="ValidarCampo(this,'Informe o sobrenome.')" />
+            </div>
+            <div class="form-group m-3">
+                <label asp-for="cpf" class="control-label"></label>
+                <input asp-for="cpf" class="form-control" onblur="ValidarCampo(this, 'Informe um CPF válido.', { func : ValidarCPF(this.value ?? 0) })" />
+            </div>
+            <div class="form-group m-3">
+                <label for="usuarioObj_permissao" class="form-label">Permissão</label>
+                <select class="form-select" aria-label="CategoriaProduto" asp-for="usuarioObj.permissao" onclick="ValidarCampo(this, 'Selecione a permissão do usuário.')" onblur="ValidarCampo(this, 'Selecione a permissão do usuário.')">
+                    <option selected>Selecione uma Permissão.</option>
+                    @if (ViewBag.permissoes.Count > 0)
+                    {
+                        foreach (var item in ViewBag.permissoes)
+                        {
+                            <option value="@item.id">@item.nome</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group m-3">
+                <label asp-for="dataNascimento" class="control-label"></label>
+                <input asp-for="dataNascimento" type="date" class="form-control" onblur="ValidarCampo(this,'Informe uma data de nascimento.')" />
+            </div>
+            <div class="form-group m-3">
+                <label asp-for="usuarioObj.email" class="control-label"></label>
+                <input asp-for="usuarioObj.email" type="email" class="form-control" onblur="ValidarCampo(this,'Informe um e-mail.')" />
+            </div>
+            <div class="form-group m-3">
+                <label asp-for="usuarioObj.senha" class="control-label"></label>
+                <input asp-for="usuarioObj.senha" type="password" class="form-control" onblur="ValidarCampo(this,'Informe uma senha.')" />
+            </div>
+            <div class="row row-cols-auto m-2">
+                <span id="tempmessage">@TempData["message"]</span>
+            </div>
+            <div class="form-group m-2">
+                <input type="button" value="Salvar" class="btn btn-primary" onclick="Submit('Salvar')" />
+                <a asp-controller="Usuario" asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#cpf").mask("999.999.999-99");
+        });
+    </script>
+}

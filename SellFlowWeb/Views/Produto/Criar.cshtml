@@ -1,0 +1,87 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model SellFlowWeb.Models.DataView.ProdutoDataView
+
+@{
+    ViewData["Title"] = "Produto";
+}
+
+<form enctype="multipart/form-data" asp-action="Salvar" id="Salvar">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="id" hidden class="visually-hidden" value="0">
+    <input asp-for="ativo" hidden class="visually-hidden" value="true">
+    <input asp-for="usuariovendedorObj.id" hidden class="visually-hidden" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idusuario").Value">
+
+    <div class="row">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome Produto</label>
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe o nome do produto.')">
+        </div>
+
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição do Produto</label>
+            <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição do produto.')"></textarea>
+        </div>
+        <div class="row  my-3">
+            <div class="form-group col-3 me-2">
+                <label for="valorDecimal" class="form-label">valor do Produto</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+                    <input type="text" class="form-control money" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do produto.')">
+                </div>
+            </div>
+            <div class="form-group col">
+                <label asp-for="categoriaObj" class="form-label"></label>
+                <select class="form-select" aria-label="CategoriaProduto" asp-for="categoriaObj.id" onclick="ValidarCampo(this, 'Selecione uma categoria para o produto.')" onblur="ValidarCampo(this, 'Selecione uma categoria para o produto.')">
+                    <option selected>Selecione uma Categoria.</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="ImagemArquivo" class="form-label">Imagem Destaque</label>
+            <input asp-for="imagemArquivo" class="form-control" onblur="ValidarCampo(this, 'Faça o upload da imagem.')">
+        </div>
+        <div class="row row-cols-auto m-2">
+            <span id="tempmessage">@ViewBag.message</span>
+        </div>
+        <div class="row row-cols-auto m-2">
+
+            <div class="col">
+                <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+            </div>
+
+            <div class="col">
+                @Html.ActionLink("Voltar", "Index", "Produto", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Produto/ProdutoMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('.money').mask('###.###.##0,00', { reverse: true });
+            await preencherCategoria();
+        });
+
+        async function preencherCategoria () {
+            await GetListCategoria().then(response => {
+                console.log('response', response);
+                response.forEach((item, y) => {
+                    console.log(`categoria-item ${y + 1}`, item);
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#categoriaObj_id").append(option);
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        };
+
+    </script>
+}

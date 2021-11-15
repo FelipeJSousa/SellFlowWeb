@@ -1,0 +1,41 @@
+﻿@using Models
+@model SellFlowWeb.Models.DataView.AnuncioDataView
+
+
+<div class="col">
+    <div class="card h-100">
+        @{ 
+            <img src="@Model.produtoObj.imagemdestaque" class="card-img-top imgCard" alt="...">
+        }
+        @if (double.Parse(Model.percentPromocao.Replace("%", "")) > 0)
+        {
+            <span class="badge rounded-pill bg-success mx-2">Desconto @Model.percentPromocao</span>
+        }
+        <div class="card-body">
+            <h4 class="card-title">@Model.nome</h4>
+            @if (double.Parse(Model.percentPromocao.Replace("%", "")) > 0)
+            {
+                <h5 class="card-text text-success">R$ @Model.valorDecimal - <s class="text-secondary">R$ @Model.produtoObj.valorDecimal</s></h5>
+            }
+            else
+            {
+                <h5 class="card-text">R$ @Model.valorDecimal</h5>
+            }
+            <h6 class="card-text">@Model.produtoObj.nome</h6>
+            <p class="card-text">Vendedor - @Model.vendedor</p>
+            @Html.ActionLink("Visualizar", "Visualizar", "Anuncio", new { id = Model.id}, new { @class = "btn btn-primary" })
+        </div>
+        <div class="card-footer">
+            @if ((DateTime.Now.Date - Model.dataCriacao.Date).TotalDays > 0)
+            {
+                var totaldays = (DateTime.Now.Date - Model.dataCriacao.Date).TotalDays;
+                <small class="text-muted">Postado a @totaldays dias.</small>
+            }
+            else
+            {
+                var totalminutes = ((int)(DateTime.Now - Model.dataCriacao).TotalMinutes);
+                <small class="text-muted">Postado a @totalminutes minutos.</small>
+            }
+        </div>
+    </div>
+</div>

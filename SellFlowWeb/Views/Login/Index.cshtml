@@ -1,0 +1,41 @@
+﻿@model SellFlowWeb.Models.DataView.UsuarioDataView
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<form action="javascript:RealizarLogin()">
+
+    <div class="row justify-content-center">
+        <div class="mb-3 col-5">
+            <label asp-for="email" class="form-label">E-mail</label>
+            <input type="text" class="form-control" asp-for="email" aria-describedby="Email">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mb-3 col-5">
+            <label asp-for="senha" class="form-label">Senha</label>
+            <input type="password" class="form-control" asp-for="senha">
+        </div>
+
+    </div>
+    <div class="row row-cols-auto justify-content-center">
+        <span id="message">@TempData["message"]</span>
+    </div>
+    <div class="row row-cols-auto justify-content-center">
+        <div class="col">
+            <button type="submit" id="btnlogin" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i>Login</button>
+        </div>
+
+        <div class="col">
+            <a asp-controller="Usuario" asp-action="Cadastrar" class="btn btn-outline-secondary">Cadastrar-se</a>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Login/LoginMain.js"></script>
+}

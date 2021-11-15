@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model SellFlowWeb.Models.DataView.AnuncioDataView
+@{
+    ViewData["Title"] = "Anuncio";
+}
+
+<form asp-action="Salvar" id="Salvar">
+
+    <div class="row">
+        <input asp-for="id" hidden class="visually-hidden" value="@Model.id">
+        <input asp-for="ativo" hidden class="visually-hidden" value="@Model.ativo">
+
+        <div class="mb-3">
+            <label asp-for="nome" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="nome" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe o nome do anuncio.')">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="descricao" class="form-label"></label>
+            <textarea type="text" class="form-control" asp-for="descricao" onblur="ValidarCampo(this, 'Informe a descrição do anuncio.')"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="produtoObj.id" class="form-label">Produto</label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="produtoObj.id" onclick="ValidarCampo(this, 'Selecione o produto do anuncio.')" onblur="ValidarCampo(this, 'Selecione o produto do anuncio.')">
+                <option selected>Selecione um produto.</option>
+                @if (ViewBag.produtos.Count > 0)
+                {
+                    foreach (var item in ViewBag.produtos)
+                    {
+                        <option value="@item.id">@item.nome</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"><b>R$</b></span>
+            <input type="text" class="form-control" asp-for="valorDecimal" aria-describedby="valorDecimal" onblur="ValidarCampo(this,'Informe o valor do anuncio.')">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="qtdeDisponivel" class="form-label"></label>
+            <input type="number" class="form-control" asp-for="qtdeDisponivel" onblur="ValidarCampo(this,'Informe a quantidade disponível.')">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="dataCriacao" class="form-label"></label>
+            <input type="date" class="form-control" asp-for="dataCriacao" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe a data de criação do anuncio.')" disabled readonly>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="dataEncerramento" class="form-label"></label>
+            <input type="date" class="form-control" asp-for="dataEncerramento" aria-describedby="NomeProduto" onblur="ValidarCampo(this,'Informe a data de encerrameto do anuncio.')">
+        </div>
+
+
+        <div class="mb-3">
+            <label for="anunciosituacaoObj_id" class="form-label">Situação</label>
+            <select class="form-select" aria-label="CategoriaProduto" asp-for="anuncioSituacaoObj.id" onclick="ValidarCampo(this, 'Selecione a situação do anuncio.')" onblur="ValidarCampo(this, 'Selecione o situação do anuncio.')">
+                <option selected>Selecione a situação.</option>
+
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-auto">
+
+        <span>@ViewBag.message</span>
+        <div class="col">
+            <button type="button" id="btnsalvar" class="btn btn-primary" onclick="Submit('Salvar')">Salvar</button>
+        </div>
+
+        <div class="col">
+            @Html.ActionLink("Voltar", "Index", "Anuncio", new { usuario = Context.Request.HttpContext.Session.GetInt32("idusuario").Value }, new { @class = "btn btn-secondary" })
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="~/js/Anuncio/AnuncioMain.js"></script>
+    <script src="~/js/Comun/main.js"></script>
+    <script src="~/js/jquery.maskedinput.js"></script>
+    <script>
+
+        $(document).ready(async () => {
+            $('#valorDecimal').mask('###.###.##0,00', { reverse: true });
+            $('#produto_id').val(@Model.produtoObj.id);
+            await preencherSituacao();
+        });
+
+        async function preencherSituacao () {
+            await GetListSituacao().then(response => {
+                console.log(response)
+                response.forEach((item, y) => {
+                    let option = $("<option>", { value: item.id, text: item.nome });
+                    $("#anuncioSituacaoObj_id").append(option);
+                    $('#anuncioSituacaoObj_id').val(@Model.anuncioSituacaoObj.id)
+                });
+            }).catch(e => {
+                console.log('error', e);
+            });
+        }
+    </script>
+}
