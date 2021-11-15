@@ -24,8 +24,8 @@
                 <label asp-for="cpf" class="control-label"></label>
                 <input asp-for="cpf" class="form-control" onblur="ValidarCampo(this, 'Informe um CPF válido.', { func : ValidarCPF(this.value ?? 0) })" />
             </div>
-            <div class="form-group col">
-                <label asp-for="usuarioObj.permissao" class="form-label"></label>
+            <div class="form-group m-3">
+                <label for="usuarioObj_permissao" class="form-label">Permissão</label>
                 <select class="form-select" aria-label="CategoriaProduto" asp-for="usuarioObj.permissao" onclick="ValidarCampo(this, 'Selecione a permissão do usuário.')" onblur="ValidarCampo(this, 'Selecione a permissão do usuário.')">
                     <option selected>Selecione uma Permissão.</option>
                     @if (ViewBag.permissoes.Count > 0)

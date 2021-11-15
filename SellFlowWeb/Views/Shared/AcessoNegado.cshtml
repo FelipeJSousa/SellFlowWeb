@@ -4,10 +4,38 @@
     Layout = "~/Views/Shared/_Imports.cshtml";
 }
 
-<h1 class="text-danger">SellFlow.</h1>
-<h2 class="text-danger">Acesso Negado</h2>
+<header class="m-3">
+    <div class="container justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-2">
+                <h1>SellFlow</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <h2 class="text-danger">Acesso Negado</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="text-center">
+                <p class="text-danger mb-1">Você não possui permissões suficientes para acessar essa página.</p>
+                <p class="text-danger">Volte a tela inicial ou realize o login com outras credenciais.</p>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container my-5">
 
-<a asp-action="Index" asp-controller="Home" class="btn btn-outline-light nav-link"><i class="bi bi-box-home mx-1"></i>Voltar Tela Incial</a>
-<a asp-action="Index" asp-controller="Login" class="btn btn-outline-info nav-link"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
+    <div class="row row-cols-auto justify-content-center">
+        <div class="col">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-lg btn-primary">Voltar Tela Incial</a>
+        </div>
+
+        <div class="col">
+            <a asp-action="Index" asp-controller="Login" class="btn btn-lg btn-outline-info"><i class="bi bi-box-arrow-in-right mx-1"></i>Realizar Login</a>
+        </div>
+
+    </div>
+</div>
 
 

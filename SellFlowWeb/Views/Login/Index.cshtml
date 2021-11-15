@@ -7,23 +7,23 @@
 
 <form action="javascript:RealizarLogin()">
 
-    <div class="row">
-
-        <div class="mb-3">
+    <div class="row justify-content-center">
+        <div class="mb-3 col-5">
             <label asp-for="email" class="form-label">E-mail</label>
             <input type="text" class="form-control" asp-for="email" aria-describedby="Email">
         </div>
-
-        <div class="mb-3">
+    </div>
+    <div class="row justify-content-center">
+        <div class="mb-3 col-5">
             <label asp-for="senha" class="form-label">Senha</label>
             <input type="password" class="form-control" asp-for="senha">
         </div>
 
     </div>
-    <div class="row row-cols-auto">
+    <div class="row row-cols-auto justify-content-center">
         <span id="message">@TempData["message"]</span>
     </div>
-    <div class="row row-cols-auto">
+    <div class="row row-cols-auto justify-content-center">
         <div class="col">
             <button type="submit" id="btnlogin" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i>Login</button>
         </div>
